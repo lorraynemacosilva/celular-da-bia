@@ -1,6 +1,5 @@
-import Phone from '@/components/Phone';
-import { ep1 } from '@/lib/content/ep1';
+import { redirect } from 'next/navigation';
 
 export default function Page() {
-  return <Phone episode={ep1} />;
+  redirect('/ep2.html');
 }
