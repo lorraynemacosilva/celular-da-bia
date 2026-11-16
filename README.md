@@ -29,6 +29,8 @@ O celular da Bia só abre com o código de 4 dígitos que aparece no final do ep
 
 Para um episódio novo: crie a variável `CODE_EP2` na Vercel, faça um novo deploy e mostre o código no final do vídeo. A dica do botão "Esqueci" fica em `passHint`, no arquivo do episódio.
 
+O EP2 independente está em `public/ep2.html` e pode ser aberto em `/ep2`. O código é verificado pela rota `/api/unlock`, usando a variável de servidor `CODE_EP2`.
+
 ## Publicar na Vercel
 
 1. Suba a pasta num repositório no GitHub.
@@ -49,6 +51,7 @@ O plano gratuito (Hobby) da Vercel é para uso não comercial. Se o projeto pass
 | `lib/store.ts` | Progresso da jogadora, salvo no aparelho |
 | `components/Phone.tsx` | As telas do celular (bloqueio, início, galeria, feed, notas, votação) |
 | `components/ChatView.tsx` | O motor das conversas (digitando…, escolhas, consequências) |
+| `public/ep2.html` | Experiência independente do Episódio 2 |
 | `app/api/vote/route.ts` | Recebe os votos e devolve as porcentagens |
 
 ## Como criar um novo episódio

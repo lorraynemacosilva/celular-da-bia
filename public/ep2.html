@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>90 Dias na Coreia — O celular da Bia</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Fraunces:opsz,wght@9..144,600&family=Noto+Sans+KR:wght@500;700&family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+:root{--ink:#0B0E14;--slate:#1C2230;--panel:#141925;--line:#2A3142;--fog:#E6E8EE;--mute:#8b93a7;--violet:#8B7CFF;--teal:#3BA7A0;--amber:#FFB547;--red:#ff5a5a}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:#05070b;color:var(--fog);font-family:'Plus Jakarta Sans','Noto Sans KR',system-ui,sans-serif}
+body{display:flex;align-items:center;justify-content:center}
+#phone{position:relative;width:100vw;height:100dvh;overflow:hidden;background:var(--ink)}
+@media (min-width:520px){#phone{width:390px;height:844px;border-radius:52px;border:12px solid #000;box-shadow:0 0 0 2px #2A3142,0 40px 120px rgba(0,0,0,.7)}}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;padding-top:env(safe-area-inset-top)}
+.screen.on{display:flex}
+.status{height:44px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 26px;font-size:14px;font-weight:600}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+/* lock */
+#lock{background:radial-gradient(circle at 30% 15%,#3a3470 0,#1C2230 45%,var(--ink) 100%)}
+#lock .clock{font-size:86px;font-weight:300;text-align:center;letter-spacing:-2px;margin-top:20px}
+#lock .date{text-align:center;color:#c8cbe0;font-weight:600}
+.notif{margin:8px 14px 0;background:rgba(230,232,238,.12);backdrop-filter:blur(16px);border-radius:22px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;animation:drop .5s both}
+.notif .ic{width:38px;height:38px;border-radius:10px;flex:none;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--ink)}
+.notif b{font-size:14px}.notif p{font-size:14px;color:#dfe2ec;margin-top:2px}.notif small{font-size:11px;color:#c8cbe0;margin-left:auto}
+@keyframes drop{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+.unlock{margin:auto auto 34px;padding:12px 26px;border-radius:30px;background:rgba(230,232,238,.14);font-weight:600;font-size:14px;animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.55}}
+/* home */
+#home{background:radial-gradient(circle at 70% 10%,#2b5f5c 0,#1C2230 40%,var(--ink) 100%)}
+.widget{margin:12px 18px;border-radius:26px;padding:16px 18px;background:rgba(255,181,71,.14);border:1.5px solid rgba(255,181,71,.5)}
+.widget small{color:var(--amber);font-weight:700;font-size:11px;letter-spacing:1.5px}
+.widget div{font-family:Fraunces,serif;font-size:30px;margin-top:2px}
+.bar{height:6px;border-radius:3px;background:rgba(255,255,255,.12);margin-top:10px;overflow:hidden}.bar i{display:block;height:100%;width:1.1%;background:var(--amber)}
+.apps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 6px;padding:14px 18px}
+.app{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11.5px;position:relative}
+.app .ico{width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.badge{position:absolute;top:-5px;right:8px;background:var(--red);color:#fff;font-size:11px;font-weight:700;border-radius:10px;padding:1px 6px}
+.progress{margin:auto 18px 26px;background:rgba(20,25,37,.75);border:1px solid var(--line);border-radius:18px;padding:12px 14px;font-size:13px;color:#c8cbe0}
+.progress b{color:var(--fog)}
+/* app chrome */
+.top{height:58px;flex:none;display:flex;align-items:center;gap:12px;padding:0 14px;background:var(--panel);border-bottom:1px solid var(--line)}
+.back{font-size:28px;color:var(--violet);width:28px}
+.av{width:38px;height:38px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--ink)}
+.top .t b{display:block;font-size:15px}.top .t small{font-size:12px;color:var(--mute)}
+.list{flex:1;overflow:auto}
+.row{display:flex;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid #1a2030;text-align:left;width:100%}
+.row .m{flex:1;min-width:0}.row b{font-size:15px}.row p{font-size:13px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .dot{width:10px;height:10px;border-radius:50%;background:var(--violet)}
+/* chat */
+.msgs{flex:1;overflow:auto;padding:14px 12px 8px;background:#10141d;display:flex;flex-direction:column;gap:6px}
+.b{max-width:78%;padding:9px 12px 6px;border-radius:18px;font-size:15px;line-height:1.35;animation:pop .25s both;word-wrap:break-word}
+.b.them{align-self:flex-start;background:#2A3142;border-bottom-left-radius:6px}
+.b.me{align-self:flex-end;background:var(--violet);color:var(--ink);border-bottom-right-radius:6px}
+.b time{display:block;text-align:right;font-size:10.5px;opacity:.65;margin-top:2px}
+.b.img{padding:5px}.b.img svg{display:block;border-radius:14px;width:220px;height:auto}
+.day{align-self:center;font-size:11px;color:var(--mute);background:var(--slate);padding:4px 12px;border-radius:12px;margin:6px 0}
+.aud{display:flex;align-items:center;gap:8px;min-width:200px}.aud .pl{width:0;height:0;border-left:13px solid currentColor;border-top:8px solid transparent;border-bottom:8px solid transparent}
+.aud .w{display:flex;gap:2px;align-items:center;height:24px}.aud .w i{width:3px;border-radius:2px;background:currentColor;opacity:.75}
+.tr{font-size:12.5px;font-style:italic;opacity:.85;margin-top:6px;border-top:1px solid rgba(0,0,0,.15);padding-top:6px}
+.typing{align-self:flex-start;background:#2A3142;border-radius:18px;padding:12px 14px;display:flex;gap:4px}.typing i{width:7px;height:7px;border-radius:50%;background:var(--mute);animation:bl 1s infinite}.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes bl{50%{opacity:.25}}@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:none}}
+.composer{flex:none;padding:10px 10px calc(12px + env(safe-area-inset-bottom));background:var(--panel);border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px;min-height:64px}
+.choice{width:100%;text-align:left;background:rgba(139,124,255,.14);border:1.5px solid var(--violet);border-radius:16px;padding:11px 14px;font-size:14.5px;font-weight:600;animation:pop .25s both}
+.choice:active{background:rgba(139,124,255,.35)}
+.hint{font-size:13px;color:var(--mute);text-align:center;padding:10px}
+/* gallery */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:3px}
+.grid button{aspect-ratio:1;overflow:hidden;background:var(--slate);position:relative}.grid svg{width:100%;height:100%;display:block}
+.grid .lock{display:flex;align-items:center;justify-content:center;color:var(--mute);font-size:12px;padding:8px;text-align:center}
+.viewer{position:absolute;inset:0;background:rgba(5,7,11,.96);display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:20;padding:20px}
+.viewer.on{display:flex}.viewer svg{max-width:100%;max-height:70%;border-radius:12px}.viewer p{font-size:14px;color:#c8cbe0;text-align:center}
+/* feed */
+.post{border-bottom:1px solid var(--line);padding:12px 14px}
+.post .h{display:flex;gap:10px;align-items:center;font-size:14px}.post .h b{font-size:14px}.post .h small{color:var(--mute);font-size:12px}
+.post p{font-size:14.5px;margin:10px 0;line-height:1.45}
+.post svg{width:100%;height:auto;border-radius:12px;display:block}
+.post .acts{display:flex;gap:16px;font-size:13px;color:var(--mute);margin-top:8px;align-items:center}
+.pin{margin-left:auto;font-size:12.5px;font-weight:700;color:var(--amber);border:1.5px solid var(--amber);border-radius:14px;padding:5px 10px}
+.pin.done{color:var(--teal);border-color:var(--teal)}
+/* notes */
+.note{padding:18px 18px 40px;overflow:auto;flex:1;background:#f5efe0;color:#2a2420}
+.note h2{font-family:Fraunces,serif;font-size:26px;margin-bottom:4px}.note small{color:#8a7f70}
+.note p{font-size:15px;line-height:1.6;margin:12px 0}
+.note h3{font-size:14px;letter-spacing:2px;color:#b4245d;margin:22px 0 8px}
+.clue{font-family:Caveat,cursive;font-size:24px;line-height:1.25;padding:2px 0;animation:pop .4s both}
+.clue.miss{color:#bdb3a3}
+.theory{margin-top:18px;background:#ffe3a3;border-radius:6px;padding:14px;font-family:Caveat,cursive;font-size:24px;transform:rotate(-1.5deg);animation:pop .5s both}
+/* vote/end */
+.vote{position:absolute;inset:0;z-index:30;background:linear-gradient(180deg,#2f2a63 0,#141925 55%,var(--ink));display:none;flex-direction:column;padding:calc(30px + env(safe-area-inset-top)) 20px 24px;overflow:auto}
+.vote.on{display:flex}
+.vote .k{color:var(--amber);font-weight:700;letter-spacing:3px;font-size:12px;text-align:center}
+.vote h1{font-family:Fraunces,serif;font-weight:600;font-size:34px;line-height:1.1;text-align:center;margin:10px 0 18px}
+.opt{display:flex;gap:14px;align-items:center;text-align:left;padding:14px 16px;border-radius:20px;background:rgba(230,232,238,.07);border:2px solid rgba(230,232,238,.14);margin-bottom:10px;font-size:15.5px;font-weight:600;width:100%}
+.opt span{width:40px;height:40px;border-radius:50%;background:#2A3142;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex:none}
+.opt.sel{border-color:var(--violet);background:rgba(139,124,255,.2)}.opt.sel span{background:var(--violet);color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0}
+.chip{font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:14px;background:rgba(59,167,160,.18);border:1px solid var(--teal)}
+.cta{display:block;width:100%;text-align:center;padding:14px;border-radius:18px;background:var(--violet);color:var(--ink);font-weight:700;font-size:16px;margin-top:10px}
+.ghost{display:block;width:100%;text-align:center;padding:12px;border-radius:18px;border:1.5px solid var(--line);font-weight:600;font-size:14px;margin-top:10px;color:#c8cbe0}
+.fine{font-size:11px;color:var(--mute);text-align:center;margin-top:16px}
+.toast{position:absolute;left:50%;bottom:90px;transform:translateX(-50%);background:var(--fog);color:var(--ink);font-weight:700;font-size:13px;padding:10px 16px;border-radius:20px;z-index:50;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1}
+
+/* ===== iOS glass skin ===== */
+html,body{font-family:-apple-system,'SF Pro Text','Inter','Noto Sans KR',system-ui,sans-serif}
+#phone{background:#000}
+@media (min-width:520px){#phone{border-radius:58px;border:11px solid #0a0a0c;box-shadow:0 0 0 2px #5b5f6b,0 0 0 4px #1b1d22,0 50px 140px rgba(0,0,0,.75)}}
+.island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:122px;height:35px;border-radius:20px;background:#000;z-index:60;display:none}
+@media (min-width:520px){.island{display:block}}
+.homebar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:rgba(255,255,255,.85);z-index:60;pointer-events:none}
+.status{height:52px;padding:0 30px 0 34px;font-size:16px;font-weight:600;letter-spacing:-.2px;align-items:flex-end;padding-bottom:6px}
+.status .si{display:flex;gap:6px;align-items:center}
+.wall{position:absolute;inset:0;z-index:0;overflow:hidden}
+.wall svg{position:absolute;inset:-4%;width:108%;height:108%;filter:saturate(1.1)}
+.wall:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,30,.25),rgba(10,12,30,.05) 40%,rgba(5,6,12,.55))}
+.screen>*{position:relative;z-index:1}
+.screen>.wall{position:absolute;z-index:0}
+.glass{background:rgba(255,255,255,.13);-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -1px 0 rgba(255,255,255,.06),0 10px 30px rgba(0,0,0,.25)}
+/* lock */
+#lock{background:#000}
+#lock .date{font-size:19px;font-weight:600;margin-top:6px;color:rgba(255,255,255,.9)}
+#lock .clock{font-family:'Inter',-apple-system,sans-serif;font-weight:700;font-size:96px;letter-spacing:-4px;margin-top:-6px;color:rgba(255,255,255,.92)}
+.notif{border-radius:24px;margin:8px 12px 0;padding:12px 14px;background:rgba(40,40,52,.38);-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%);border:1px solid rgba(255,255,255,.16)}
+.notif .ic{border-radius:9px;width:36px;height:36px}
+.lockfoot{margin:auto 0 30px;display:flex;justify-content:space-between;align-items:center;padding:0 46px}
+.lockfoot .circ{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.unlock{margin:0;animation:pulse 2.2s infinite;background:none;font-size:14px;font-weight:600;padding:8px 10px}
+/* home */
+#home{background:#000}
+.widgets{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:10px 22px 0}
+.wbig{grid-column:1/3;border-radius:26px;padding:16px 18px}
+.wbig small{color:var(--amber);font-weight:800;font-size:11px;letter-spacing:1.5px}
+.wbig .n{font-family:'Inter',sans-serif;font-weight:800;font-size:34px;letter-spacing:-1px;margin-top:2px}
+.wbig .n span{font-weight:500;font-size:18px;opacity:.8;letter-spacing:0}
+.wsm{border-radius:24px;padding:14px;aspect-ratio:1;display:flex;flex-direction:column;justify-content:space-between}
+.wsm .city{font-size:13px;font-weight:700}.wsm .deg{font-size:38px;font-weight:300;letter-spacing:-1px}.wsm small{font-size:12px;opacity:.85}
+.wsm.todo{font-size:12.5px;line-height:1.35}.wsm.todo b{font-size:13px;color:var(--amber)}
+.wsm.todo .it{display:flex;gap:6px;align-items:flex-start}.wsm.todo .ck{width:13px;height:13px;border-radius:50%;border:1.5px solid rgba(255,255,255,.7);flex:none;margin-top:2px}
+.wsm.todo .ck.on{background:var(--amber);border-color:var(--amber)}
+.apps{padding:22px 26px 0;gap:22px 10px}
+.app{font-size:12px;font-weight:500;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+.app .ico{width:62px;height:62px;border-radius:16px;position:relative;overflow:hidden;box-shadow:0 6px 16px rgba(0,0,0,.3)}
+.ico.glassy{background:rgba(255,255,255,.16)!important;-webkit-backdrop-filter:blur(20px) saturate(190%);backdrop-filter:blur(20px) saturate(190%);border:1px solid rgba(255,255,255,.35);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.55),0 6px 16px rgba(0,0,0,.25)}
+.ico:before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.35) 0,rgba(255,255,255,0) 45%);pointer-events:none}
+.ico svg{width:34px;height:34px;position:relative}
+.badge{top:-6px;right:2px;min-width:20px;height:20px;border-radius:10px;font-size:12px;display:flex;align-items:center;justify-content:center;border:0;background:#ff3b30}
+.dock{position:absolute;left:12px;right:12px;bottom:22px;border-radius:34px;padding:12px 16px;display:flex;justify-content:space-around;z-index:2}
+.dock .app span.lbl{display:none}
+.progress{display:none}
+/* app screens */
+#chats,#chat,#gallery,#feed{background:#000}
+.top{height:auto;padding:6px 12px 10px;background:rgba(18,20,28,.72);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border-bottom:.5px solid rgba(255,255,255,.12)}
+.back{font-size:34px;font-weight:300;color:#7aa8ff;line-height:1}
+.chat-top{flex-direction:column;align-items:center;gap:4px;position:relative}
+.chat-top .back{position:absolute;left:10px;top:12px}
+.chat-top .av{width:52px;height:52px;font-size:16px;box-shadow:0 0 0 2px rgba(255,255,255,.12)}
+.chat-top .t{text-align:center}.chat-top .t b{font-size:13px;font-weight:600}.chat-top .t small{font-size:11px}
+.msgs{background:#000;padding:12px 12px 10px;gap:3px}
+.b{font-size:16px;border-radius:20px;padding:8px 13px 6px;max-width:75%}
+.b.them{background:#26262a;border-bottom-left-radius:6px}
+.b.me{background:linear-gradient(180deg,#9b8cff,#7a68ff);color:#fff;border-bottom-right-radius:6px}
+.b.me time{color:#fff}
+.typing{background:#26262a}
+.composer{background:rgba(18,20,28,.72);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border-top:.5px solid rgba(255,255,255,.12);padding-bottom:calc(26px + env(safe-area-inset-bottom))}
+.choice{border-radius:22px;background:rgba(255,255,255,.08);border:1px solid rgba(155,140,255,.7);box-shadow:inset 0 1px 0 rgba(255,255,255,.18);font-weight:600}
+.row{border-bottom:.5px solid rgba(255,255,255,.1);padding:11px 16px}
+.row .av{width:46px;height:46px}
+.big-title{font-size:32px;font-weight:800;letter-spacing:-.6px;padding:2px 18px 10px}
+.grid{gap:2px;padding:0}
+.post{border-bottom:.5px solid rgba(255,255,255,.1)}
+.vote{background:radial-gradient(circle at 50% 0,#4a3fa0 0,#1a1d33 50%,#05060a 100%)}
+.opt{border-radius:22px;background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+.cta{border-radius:22px;background:linear-gradient(180deg,#9b8cff,#7a68ff);color:#fff;box-shadow:0 10px 26px rgba(122,104,255,.45)}
+.ghost{border-radius:22px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16)}
+.toast{white-space:normal;max-width:86%;text-align:center;border-radius:22px;background:rgba(245,245,250,.9);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);top:58px;bottom:auto}
+
+/* nav + gestures */
+.screen.on.in{animation:slin .34s cubic-bezier(.2,.85,.25,1)}
+.screen.on.back-in{animation:slback .3s cubic-bezier(.2,.85,.25,1)}
+@keyframes slin{from{transform:translateX(100%);box-shadow:-20px 0 40px rgba(0,0,0,.5)}to{transform:none}}
+@keyframes slback{from{transform:translateX(-28%);opacity:.6}to{transform:none;opacity:1}}
+.screen.dragging{transition:none;box-shadow:-20px 0 40px rgba(0,0,0,.5)}
+.screen.snap{transition:transform .25s cubic-bezier(.2,.85,.25,1)}
+#phone{touch-action:pan-y}
+/* responsive */
+@media (max-height:700px){#lock .clock{font-size:76px}.notif{padding:9px 12px}.widgets{gap:10px;padding-top:4px}.wbig{padding:12px 14px}.wbig .n{font-size:28px}.wsm{aspect-ratio:auto;min-height:118px}.apps{padding-top:14px;gap:14px 8px}.app .ico{width:54px;height:54px}.dock{bottom:16px;padding:9px 12px}}
+@media (max-width:350px){.status{padding:0 18px 6px 22px}.widgets{padding:8px 14px 0;gap:10px}.apps{padding:16px 14px 0}.app .ico{width:52px;height:52px}.ico svg{width:28px;height:28px}.wsm .deg{font-size:30px}.wsm.todo{font-size:11px}}
+/* bank (fintech look) */
+#bank{background:#0d0f16}
+.bk-head{padding:4px 20px 0}
+.bk-card{margin:10px 16px 0;border-radius:28px;padding:20px;background:linear-gradient(140deg,#3BA7A0,#2b5f8c 55%,#3a3470);box-shadow:0 18px 40px rgba(59,167,160,.25),inset 0 1px 0 rgba(255,255,255,.3);position:relative;overflow:hidden}
+.bk-card:after{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.12)}
+.bk-card small{font-size:13px;opacity:.85;font-weight:600}
+.bk-card .bal{font-size:36px;font-weight:800;letter-spacing:-1px;margin:4px 0 14px}
+.bk-acts{display:flex;gap:10px;position:relative;z-index:1}
+.bk-acts button{flex:1;padding:11px 8px;border-radius:16px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);font-weight:700;font-size:13.5px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.bk-sec{margin:18px 16px 0;font-size:13px;font-weight:700;color:var(--mute);letter-spacing:.5px}
+.vaq{margin:8px 16px 0;border-radius:22px;padding:14px 16px}
+.vaq b{font-size:15px}.vaq p{font-size:13px;color:#c8cbe0;margin-top:4px;line-height:1.4}
+.vaq .amt{font-size:22px;font-weight:800;color:var(--amber);margin-top:6px}
+.tx{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:.5px solid rgba(255,255,255,.08)}
+.tx .ti{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;background:rgba(255,255,255,.08);flex:none}
+.tx .tm{flex:1;min-width:0}.tx .tm b{font-size:14.5px;display:block}.tx .tm small{font-size:12px;color:var(--mute)}
+.tx .tv{font-weight:700;font-size:14.5px;white-space:nowrap}.tx .tv.pos{color:#4cd38a}
+.sheet{position:absolute;inset:0;z-index:40;background:rgba(0,0,0,.45);display:none;align-items:flex-end}
+.sheet.on{display:flex}
+.sheet .pan{width:100%;border-radius:28px 28px 0 0;padding:10px 18px calc(28px + env(safe-area-inset-bottom));background:rgba(28,30,42,.92);-webkit-backdrop-filter:blur(30px);backdrop-filter:blur(30px);border-top:1px solid rgba(255,255,255,.15);animation:up .3s cubic-bezier(.2,.85,.25,1)}
+@keyframes up{from{transform:translateY(100%)}}
+.sheet .grab{width:40px;height:5px;border-radius:3px;background:rgba(255,255,255,.3);margin:0 auto 14px}
+.sheet h3{font-size:18px;margin-bottom:4px}.sheet p{font-size:13.5px;color:#c8cbe0;margin-bottom:14px}
+.amts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.amts button{padding:14px 4px;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);font-weight:700;font-size:14px}
+.amts button:disabled{opacity:.35}
+
+/* passcode */
+#pass{background:#000}
+#pass .wall:after{background:rgba(5,6,14,.55);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.pc{margin-top:40px;text-align:center}
+.pc .lk{width:28px;height:28px;margin:0 auto 10px}
+.pc h2{font-size:20px;font-weight:600}.pc p{font-size:13.5px;color:#c8cbe0;margin-top:6px;padding:0 30px;line-height:1.4}
+.dots{display:flex;gap:18px;justify-content:center;margin:26px 0 20px}
+.dots i{width:14px;height:14px;border-radius:50%;border:1.5px solid #fff;transition:.15s}
+.dots i.on{background:#fff}
+.dots.shake{animation:shake .45s}
+@keyframes shake{20%,60%{transform:translateX(-14px)}40%,80%{transform:translateX(14px)}}
+.pad{display:grid;grid-template-columns:repeat(3,78px);gap:16px 26px;justify-content:center}
+.key{width:78px;height:78px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:34px;font-weight:400;line-height:1}
+.key small{font-size:10px;letter-spacing:2px;font-weight:700;margin-top:2px;opacity:.85}
+.key:active{background:rgba(255,255,255,.4)}
+.pcfoot{display:flex;justify-content:space-between;padding:22px 52px 0;font-size:15px;font-weight:500}
+.hintbox{margin:16px 26px 0;border-radius:20px;padding:14px 16px;font-size:13.5px;line-height:1.45;text-align:center;display:none}
+.hintbox.on{display:block;animation:pop .3s both}
+@media (max-height:700px){.pc{margin-top:16px}.dots{margin:16px 0 12px}.pad{grid-template-columns:repeat(3,68px);gap:10px 22px}.key{width:68px;height:68px;font-size:30px}}
+</style></head><body>
+<div id="phone"><div class="island"></div><div class="homebar"></div>
+  <!-- LOCK -->
+  <section class="screen on" id="lock">
+    <div class="wall" data-wall="1"></div>
+    <div class="status"><span>LUMEN</span><span class="si"></span></div>
+    <div class="date">domingo, dia 2 de 90</div>
+    <div class="clock">01:21</div>
+    <div id="lockN"></div>
+    <div class="lockfoot"><div class="circ glass" data-ic="torch"></div><button class="unlock" id="unlockBtn">toque para desbloquear</button><div class="circ glass" data-ic="cam"></div></div>
+  </section>
+  <!-- PASSCODE -->
+  <section class="screen" id="pass">
+    <div class="wall" data-wall="1"></div>
+    <div class="status"><span>LUMEN</span><span class="si"></span></div>
+    <div class="pc"><svg class="lk" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="3" fill="#fff"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="#fff" stroke-width="2.2"/></svg>
+      <h2>Digite o código</h2><p>O código do celular da Bia aparece no final do episódio.</p></div>
+    <div class="dots" id="dots"><i></i><i></i><i></i><i></i></div>
+    <div class="pad" id="pad"></div>
+    <div class="pcfoot"><button id="forgot">Esqueci</button><button id="pcBack">Cancelar</button></div>
+    <div class="hintbox glass" id="hint">🤫 Assista o <b>Episódio 2</b> até o final.<br>Dica: é a hora em que bateram na parede.</div>
+  </section>
+  <!-- HOME -->
+  <section class="screen" id="home">
+    <div class="wall" data-wall="1"></div>
+    <div class="status"><span>01:21</span><span class="si"></span></div>
+    <div class="widgets">
+      <div class="wbig glass"><small>CONTRATO LUMEN</small><div class="n">89 <span>dias restantes</span></div><div class="bar"><i></i></div></div>
+      <div class="wsm glass"><div><div class="city">Seul</div><div class="deg">3°</div></div><small>☾ Céu limpo<br>BH agora: 24°</small></div>
+      <div class="wsm glass todo" id="todo"></div>
+    </div>
+    <div class="apps" id="apps"></div>
+    <div class="progress" id="prog"></div>
+    <div class="dock glass" id="dock"></div>
+  </section>
+  <!-- CHATS LIST -->
+  <section class="screen" id="chats">
+    <div class="status"><span>01:21</span><span class="si"></span></div>
+    <div class="top" style="background:none;border:0"><button class="back" data-go="home">‹</button></div><div class="big-title">Mensagens</div>
+    <div class="list" id="chatList"></div>
+  </section>
+  <!-- CHAT -->
+  <section class="screen" id="chat">
+    <div class="status"><span>01:21</span><span class="si"></span></div>
+    <div class="top chat-top"><button class="back" data-go="chats">‹</button><div class="av" id="cAv"></div><div class="t"><b id="cName"></b><small id="cSt"></small></div></div>
+    <div class="msgs" id="msgs"></div>
+    <div class="composer" id="comp"></div>
+  </section>
+  <!-- GALLERY -->
+  <section class="screen" id="gallery">
+    <div class="status"><span>01:21</span><span class="si"></span></div>
+    <div class="top"><button class="back" data-go="home">‹</button><div class="t"><b>Galeria</b><small>Seul · dia 2</small></div></div>
+    <div class="list"><div class="grid" id="grid"></div></div>
+  </section>
+  <!-- FEED -->
+  <section class="screen" id="feed">
+    <div class="status"><span>01:21</span><span class="si"></span></div>
+    <div class="top"><button class="back" data-go="home">‹</button><div class="t"><b>Pulse</b><small>Em alta em Seul</small></div></div>
+    <div class="list" id="posts"></div>
+  </section>
+  <!-- NOTES -->
+  <section class="screen" id="notes">
+    <div class="status" style="background:#f5efe0;color:#2a2420"><span>01:21</span><span class="si dark"></span></div>
+    <div class="top" style="background:#efe6d2;border-color:#e0d4bb;color:#2a2420"><button class="back" data-go="home" style="color:#b4245d">‹</button><div class="t"><b>Notas</b></div></div>
+    <div class="note" id="noteBody"></div>
+  </section>
+  <!-- BANK -->
+  <section class="screen" id="bank">
+    <div class="status"><span>01:21</span><span class="si"></span></div>
+    <div class="top" style="background:none;border:0"><button class="back" data-go="home">‹</button></div>
+    <div class="list" id="bankBody"></div>
+    <div class="sheet" id="sheet"></div>
+  </section>
+  <div class="viewer" id="viewer"></div>
+  <!-- VOTE / END -->
+  <section class="vote" id="vote"></section>
+  <div class="toast" id="toast"></div>
+</div>
+<script>
+
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eo=x=>1-Math.pow(1-clamp(x),3);
+const eio=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+const lerp=(a,b,t)=>a+(b-a)*t;
+const $=id=>document.getElementById(id);
+let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+
+function roomSVG(dark){
+  seed=7;
+  let b='';
+  // skyline inside window (window 140..940 x 380..1280)
+  let x=150;
+  while(x<930){const w=60+rnd()*90,h=140+rnd()*420;const y=1280-h;
+    b+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${rnd()>.5?'#151a2e':'#1a2038'}"/>`;
+    for(let yy=y+20;yy<1260;yy+=34)for(let xx=x+12;xx<x+w-14;xx+=24) if(rnd()>.62) b+=`<rect x="${xx}" y="${yy}" width="10" height="14" fill="${rnd()>.3?'#FFB547':'#3BA7A0'}" opacity="${.5+rnd()*.5}"/>`;
+    x+=w+4;}
+  const tower=`<path d="M640 1060 Q700 980 760 1060 Z" fill="#12162a"/><rect x="697" y="830" width="6" height="200" fill="#12162a"/><rect x="684" y="880" width="32" height="26" rx="6" fill="#12162a"/><circle cx="700" cy="826" r="5" fill="#ff5a5a"/>`;
+  let bulbs='';for(let i=0;i<13;i++){const t=i/12,bx=60+t*960,by=300+Math.sin(t*Math.PI)*70;bulbs+=`<circle class="bulb" cx="${bx}" cy="${by}" r="30" fill="url(#glowA)"/><circle cx="${bx}" cy="${by}" r="9" fill="#FFD48a"/>`;}
+  return `<svg width="1080" height="1920" viewBox="0 0 1080 1920">
+  <rect width="1080" height="1920" fill="#1C2230"/>
+  <rect x="140" y="380" width="800" height="900" fill="url(#sky)"/>
+  <circle cx="820" cy="500" r="44" fill="#E6E8EE" opacity=".85"/>
+  ${tower}${b}
+  <rect x="140" y="380" width="800" height="900" fill="none" stroke="#2A3142" stroke-width="22"/>
+  <rect x="529" y="380" width="22" height="900" fill="#2A3142"/>
+  <rect x="110" y="1270" width="860" height="30" rx="6" fill="#2A3142"/>
+  <path d="M60 300 Q540 440 1020 300" fill="none" stroke="#0B0E14" stroke-width="4"/>
+  ${bulbs}
+  <rect y="1520" width="1080" height="400" fill="#141925"/>
+  <circle cx="110" cy="1180" r="380" fill="url(#lampG)"/>
+  <rect x="20" y="1380" width="260" height="20" fill="#2A3142"/><rect x="40" y="1400" width="16" height="140" fill="#2A3142"/><rect x="244" y="1400" width="16" height="140" fill="#2A3142"/>
+  <path d="M90 1380 L110 1250 L150 1250 L170 1380 Z" fill="#2A3142"/><path d="M80 1250 L180 1250 L155 1180 L105 1180 Z" fill="#FFB547"/>
+  <rect x="770" y="1400" width="360" height="190" rx="18" fill="#2b5f5c"/><rect x="800" y="1370" width="160" height="60" rx="26" fill="#E6E8EE"/>
+  </svg>`;}
+
+function corrSVG(){
+  return `<svg width="1080" height="1920" viewBox="0 0 1080 1920">
+  <rect width="1080" height="1920" fill="#1a1f2c"/>
+  <rect y="1540" width="1080" height="380" fill="#121620"/>
+  <path d="M420 0 L660 0 L1080 1540 L0 1540 Z" fill="url(#cone)"/>
+  <rect x="470" y="150" width="140" height="22" rx="8" fill="#E6E8EE"/>
+  <g><rect x="90" y="520" width="380" height="1020" fill="#2A3142"/><rect x="110" y="540" width="340" height="1000" fill="#3A4256"/>
+  <circle cx="410" cy="1060" r="16" fill="#c8cbe0"/><rect x="210" y="620" width="140" height="70" rx="10" fill="#1C2230"/><text x="280" y="672" text-anchor="middle" font-family="Pret" font-weight="700" font-size="44" fill="#E6E8EE">302</text>
+  <rect x="226" y="870" width="110" height="110" fill="#FFB547" transform="rotate(-6 281 925)"/>
+  <path d="M240 905 h70 M240 930 h80 M240 955 h50" stroke="#0B0E14" stroke-width="5" transform="rotate(-6 281 925)"/></g>
+  <g><rect x="610" y="520" width="380" height="1020" fill="#20263a"/><rect x="630" y="540" width="340" height="1000" fill="#2A3142"/>
+  <circle cx="670" cy="1060" r="16" fill="#8b93a7"/><rect x="730" y="620" width="140" height="70" rx="10" fill="#141925"/><text x="800" y="672" text-anchor="middle" font-family="Pret" font-weight="700" font-size="44" fill="#E6E8EE">303</text>
+  <rect id="under303" x="640" y="1532" width="320" height="10" fill="#3BA7A0"/></g>
+  <rect y="1540" width="1080" height="8" fill="#0B0E14"/>
+  </svg>`;}
+
+function storeSVG(){
+  seed=3;let shelves='';
+  for(let r=0;r<4;r++)for(let i=0;i<14;i++){const x=120+i*60,y=640+r*150;shelves+=`<rect x="${x}" y="${y-30-rnd()*40}" width="${40+rnd()*12}" height="${70}" rx="6" fill="${['#3BA7A0','#8B7CFF','#FFB547','#E6E8EE'][Math.floor(rnd()*4)]}" opacity=".55"/>`;}
+  return `<svg width="1080" height="1920" viewBox="0 0 1080 1920">
+  <rect width="1080" height="1920" fill="#0B0E14"/>
+  <rect x="0" y="380" width="1080" height="1180" fill="#1C2230"/>
+  <rect x="60" y="430" width="140" height="60" rx="10" fill="none" stroke="#3BA7A0" stroke-width="5"/><text x="130" y="476" text-anchor="middle" font-family="Pret" font-weight="700" font-size="40" fill="#3BA7A0">24H</text>
+  <rect x="80" y="540" width="920" height="760" fill="#cfe9e6"/><rect x="80" y="540" width="920" height="760" fill="#3BA7A0" opacity=".25"/>
+  ${shelves}
+  <rect x="80" y="540" width="920" height="760" fill="none" stroke="#2A3142" stroke-width="20"/><rect x="530" y="540" width="20" height="760" fill="#2A3142"/>
+  <rect x="0" y="1300" width="1080" height="260" fill="#2A3142"/>
+  <rect y="1560" width="1080" height="360" fill="#10141d"/>
+  <rect x="80" y="1600" width="920" height="200" fill="#3BA7A0" opacity=".12"/>
+  </svg>`;}
+
+
+// Personagens vetoriais animáveis
+const C={skin:'#A8714E',skinS:'#8A5A3C',hair:'#121016',hairHi:'#2c2735',top:'#17181e',topL:'#2b2e3a',pants:'#E2C397',pantsS:'#C7A577',shoe:'#1d2233',gold:'#E7B04A',lips:'#6e3b2a',mIn:'#3a1b17',blush:'#c97a5a'};
+function ik(S,T,l1,l2,side){
+  let dx=T[0]-S[0],dy=T[1]-S[1],d=Math.hypot(dx,dy);d=Math.min(d,l1+l2-0.5);d=Math.max(d,Math.abs(l1-l2)+0.5);
+  const base=Math.atan2(dy,dx),a=Math.acos((l1*l1+d*d-l2*l2)/(2*l1*d));
+  const c1=[S[0]+l1*Math.cos(base+a),S[1]+l1*Math.sin(base+a)],c2=[S[0]+l1*Math.cos(base-a),S[1]+l1*Math.sin(base-a)];
+  const E=(c1[1]>c2[1])?c1:c2;const ang=Math.atan2(T[1]-E[1],T[0]-E[0]);const H=[E[0]+l2*Math.cos(ang),E[1]+l2*Math.sin(ang)];return [E,H];}
+function arm(side,S,EH,o){const E=EH[0],H=EH[1];
+  let s=`<path d="M${S[0]} ${S[1]} L${E[0]} ${E[1]} L${H[0]} ${H[1]}" fill="none" stroke="${C.skin}" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>`;
+  s+=`<path d="M${E[0]} ${E[1]} L${H[0]} ${H[1]}" fill="none" stroke="${C.skinS}" stroke-width="6" stroke-linecap="round" opacity=".35" transform="translate(${side*6},0)"/>`;
+  s+=`<circle cx="${H[0]}" cy="${H[1]}" r="21" fill="${C.skin}"/>`;
+  if(o.phone){s+=`<g transform="translate(${H[0]},${H[1]}) rotate(${o.phoneRot||-8})"><rect x="-20" y="-58" width="40" height="76" rx="8" fill="#0B0E14" stroke="#3A4256" stroke-width="3"/><rect x="-15" y="-52" width="30" height="58" rx="4" fill="${o.screen||'#8B7CFF'}" opacity=".85"/></g><circle cx="${H[0]+side*-4}" cy="${H[1]+6}" r="16" fill="${C.skin}"/>`;}
+  return s;}
+function bun(cx,cy,r){let s=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${C.hair}"/>`;
+  for(let i=0;i<12;i++){const a=i/12*Math.PI*2;s+=`<circle cx="${cx+Math.cos(a)*r*0.88}" cy="${cy+Math.sin(a)*r*0.82}" r="${r*0.34}" fill="${C.hair}"/>`;}
+  for(let i=0;i<6;i++){const a=i/6*Math.PI*2+.4;const x=cx+Math.cos(a)*r*.5,y=cy+Math.sin(a)*r*.45;s+=`<path d="M${x} ${y} c-8 -10 6 -18 12 -8 c4 8 -6 12 -8 6" fill="none" stroke="${C.hairHi}" stroke-width="4" stroke-linecap="round"/>`;}
+  return s;}
+// ===== Bia v2 =====
+C.skin='#C68E64';C.skinS='#A9714C';C.blush='#e08f7a';C.lipU='#9c4a43';C.lipL='#b45c52';C.hair='#141118';C.hairHi='#3a3242';
+function curls(pts,r){let s='';for(const [x,y,k] of pts) s+=`<circle cx="${x}" cy="${y}" r="${r*(k||1)}" fill="${C.hair}"/>`;return s;}
+function spir(x,y,sz){return `<path d="M${x} ${y} c${-sz} ${-sz*.6} ${sz*.2} ${-sz*1.6} ${sz} ${-sz*.6} c${sz*.5} ${sz*.7} ${-sz*.3} ${sz*1.1} ${-sz*.6} ${sz*.5}" fill="none" stroke="${C.hairHi}" stroke-width="3" stroke-linecap="round" opacity=".55"/>`;}
+function biaHairBack(){
+  let s=`<path d="M-92 -1074 C-140 -1020 -136 -880 -118 -790 L118 -790 C136 -880 140 -1020 92 -1074 Z" fill="${C.hair}"/>`;
+  const L=[[-96,-1060],[-116,-1024],[-126,-984],[-128,-944],[-126,-904],[-122,-864],[-116,-826],[-100,-796],[-74,-786]];
+  s+=curls(L,24)+curls(L.map(p=>[-p[0],p[1]]),24);
+  for(const [x,y] of [[-112,-950],[-108,-860],[112,-940],[106,-850]]) s+=spir(x,y,10);
+  return s;}
+function biaEye(x,blink,mood,look){const ry=mood==='shock'?1.25:1;const k=Math.max(0.08,1-blink);
+  let s=`<g transform="translate(${x},-990) scale(1,${k})">`;
+  s+=`<path d="M-17 0 Q0 ${-15*ry} 17 0 Q0 ${10*ry} -17 0 Z" fill="#fbf4ee"/>`;
+  if(k>0.3){s+=`<circle cx="${look}" cy="-1" r="${7.5*ry}" fill="#3d2418"/><circle cx="${look}" cy="-1" r="3.6" fill="#0f0806"/><circle cx="${look+2.5}" cy="-4" r="2.2" fill="#fff"/>`;}
+  s+=`<path d="M-19 1 Q0 ${-17*ry} 18 0" fill="none" stroke="#120f14" stroke-width="4.5" stroke-linecap="round"/>`;
+  s+=x<0?`<path d="M-18 0 l-8 -6" stroke="#120f14" stroke-width="4" stroke-linecap="round"/>`:`<path d="M17 -1 l8 -6" stroke="#120f14" stroke-width="4" stroke-linecap="round"/>`;
+  s+='</g>';return s;}
+function biaMouth(mouth,mood){
+  if(mood==='shock'){const ry=12+mouth*9;return `<ellipse cx="0" cy="-934" rx="${13+mouth*3}" ry="${ry}" fill="#3a1714"/><path d="M-9 ${-934-ry+5} h18" stroke="#f6ebe4" stroke-width="5" stroke-linecap="round"/><path d="M-15 ${-934-ry+2} Q0 ${-934-ry-6} 15 ${-934-ry+2}" fill="none" stroke="${C.lipU}" stroke-width="5"/><path d="M-14 ${-934+ry-2} Q0 ${-934+ry+7} 14 ${-934+ry-2}" fill="none" stroke="${C.lipL}" stroke-width="6"/>`;}
+  if(mouth>0.08){const ry=3+mouth*11,w=mood==='smile'?20:16;
+    return `<ellipse cx="0" cy="-934" rx="${w}" ry="${ry}" fill="#3a1714"/>`+(mood==='smile'?`<path d="M${-w+5} ${-934-ry+4} h${2*w-10}" stroke="#f6ebe4" stroke-width="5" stroke-linecap="round"/>`:'')+
+    `<path d="M${-w-2} -935 Q-8 ${-940-ry} 0 ${-936-ry} Q8 ${-940-ry} ${w+2} -935" fill="none" stroke="${C.lipU}" stroke-width="5" stroke-linecap="round"/><path d="M${-w} -933 Q0 ${-926+ry} ${w} -933" fill="none" stroke="${C.lipL}" stroke-width="6" stroke-linecap="round"/>`;}
+  if(mood==='smile') return `<path d="M-21 -938 Q0 -918 21 -938 Q0 -930 -21 -938 Z" fill="#3a1714"/><path d="M-16 -936 h32" stroke="#f6ebe4" stroke-width="4"/><path d="M-23 -939 Q-8 -946 0 -942 Q8 -946 23 -939" fill="none" stroke="${C.lipU}" stroke-width="5" stroke-linecap="round"/><path d="M-18 -931 Q0 -918 18 -931" fill="none" stroke="${C.lipL}" stroke-width="5" stroke-linecap="round"/>`;
+  const dy=mood==='worried'?3:0;
+  return `<path d="M-18 ${-937+dy} Q-8 ${-945} 0 -941 Q8 -945 18 ${-937+dy} Q0 -933 -18 ${-937+dy} Z" fill="${C.lipU}"/><path d="M-16 ${-936+dy} Q0 -923 16 ${-936+dy} Q0 -932 -16 ${-936+dy} Z" fill="${C.lipL}"/><path d="M-6 -929 h8" stroke="#fff" stroke-width="2" opacity=".35" stroke-linecap="round"/>`;}
+function biaHead(o){
+  const blink=o.blink||0,mouth=o.mouth||0,mood=o.mood||'neutral',look=o.look?Math.max(-5,Math.min(5,o.look)):0;
+  const brow=mood==='shock'?-9:0,bi=mood==='worried'?-6:0;
+  let s='';
+  s+=`<path d="M-64 -1000 C-64 -1062 -36 -1074 0 -1074 C36 -1074 64 -1062 64 -1000 C64 -952 36 -906 0 -902 C-36 -906 -64 -952 -64 -1000 Z" fill="${C.skin}"/>`;
+  s+=`<path d="M-58 -960 C-50 -925 -25 -906 0 -903 C25 -906 50 -925 58 -960 C45 -930 25 -914 0 -912 C-25 -914 -45 -930 -58 -960 Z" fill="${C.skinS}" opacity=".35"/>`;
+  s+=`<ellipse cx="-63" cy="-983" rx="11" ry="17" fill="${C.skin}"/><ellipse cx="63" cy="-983" rx="11" ry="17" fill="${C.skin}"/>`;
+
+  s+=`<path d="M-46 ${-1012+brow} Q-30 ${-1028+brow+bi} -9 ${-1018+brow-bi} L-10 ${-1013+brow-bi} Q-30 ${-1021+brow+bi} -45 ${-1007+brow} Z" fill="${C.hair}"/>`;
+  s+=`<path d="M46 ${-1012+brow} Q30 ${-1028+brow+bi} 9 ${-1018+brow-bi} L10 ${-1013+brow-bi} Q30 ${-1021+brow+bi} 45 ${-1007+brow} Z" fill="${C.hair}"/>`;
+  s+=biaEye(-26,blink,mood,look)+biaEye(26,blink,mood,look);
+  s+=`<path d="M-1 -982 Q6 -966 0 -959" fill="none" stroke="${C.skinS}" stroke-width="3.5" stroke-linecap="round"/><path d="M-8 -957 Q0 -952 8 -957" fill="none" stroke="${C.skinS}" stroke-width="3.5" stroke-linecap="round"/>`;
+  s+=`<ellipse cx="-40" cy="-955" rx="14" ry="9" fill="${C.blush}" opacity=".38"/><ellipse cx="40" cy="-955" rx="14" ry="9" fill="${C.blush}" opacity=".38"/>`;
+  s+=`<ellipse cx="-44" cy="-972" rx="8" ry="4" fill="#fff" opacity=".18"/><ellipse cx="44" cy="-972" rx="8" ry="4" fill="#fff" opacity=".18"/>`;
+  s+=biaMouth(mouth,mood);
+  // top hair, side part, framing curls
+  s+=`<path d="M-72 -985 C-84 -1070 -40 -1112 6 -1108 C56 -1106 86 -1064 74 -990 C66 -1030 44 -1060 14 -1062 C-2 -1046 -40 -1040 -72 -985 Z" fill="${C.hair}"/>`;
+
+  const FL=[[-72,-1034],[-80,-1004],[-84,-972]],FR=[[74,-1028],[80,-998]];
+  s+=curls(FL,18)+curls(FR,16);
+  s+=curls([[-44,-1090],[-10,-1104],[26,-1100],[56,-1082]],22);
+  for(const [x,y] of [[-30,-1088],[10,-1100],[44,-1084]]) s+=spir(x,y,9);
+  s+=`<circle cx="-66" cy="-946" r="13" fill="none" stroke="${C.gold}" stroke-width="5"/><circle cx="66" cy="-946" r="13" fill="none" stroke="${C.gold}" stroke-width="5"/><circle cx="-64" cy="-975" r="3.5" fill="${C.gold}"/><circle cx="64" cy="-975" r="3.5" fill="${C.gold}"/>`;
+  return s;}
+function arm(side,S,EH,o){const E=EH[0],H=EH[1];
+  let s=`<path d="M${S[0]} ${S[1]} L${E[0]} ${E[1]} L${H[0]} ${H[1]}" fill="none" stroke="${C.skin}" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>`;
+  s+=`<circle cx="${H[0]}" cy="${H[1]}" r="19" fill="${C.skin}"/>`;
+  if(o.bracelet){const dx=H[0]-E[0],dy=H[1]-E[1],L=Math.hypot(dx,dy)||1,ux=dx/L,uy=dy/L,W=[H[0]-ux*30,H[1]-uy*30];
+    for(const off of [0,9]) s+=`<path d="M${W[0]-uy*19-ux*off} ${W[1]+ux*19-uy*off} L${W[0]+uy*19-ux*off} ${W[1]-ux*19-uy*off}" stroke="${C.gold}" stroke-width="5" stroke-linecap="round"/>`;}
+  if(o.phone){s+=`<g transform="translate(${H[0]},${H[1]}) rotate(${o.phoneRot||-8})"><rect x="-20" y="-58" width="40" height="76" rx="8" fill="#0B0E14" stroke="#3A4256" stroke-width="3"/><rect x="-15" y="-52" width="30" height="58" rx="4" fill="${o.screen||'#8B7CFF'}" opacity=".85"/></g><circle cx="${H[0]+side*-4}" cy="${H[1]+6}" r="15" fill="${C.skin}"/>`;}
+  return s;}
+function biaTorso(){let s=`<rect x="-16" y="-905" width="32" height="50" fill="${C.skin}"/><path d="M-16 -884 q16 14 32 0" fill="${C.skinS}" opacity=".45"/>`;
+  s+=`<path d="M-58 -870 C-94 -866 -100 -834 -92 -800 C-86 -760 -66 -700 -64 -640 L-70 -598 L70 -598 L64 -640 C66 -700 86 -760 92 -800 C100 -834 94 -866 58 -870 C40 -850 -40 -850 -58 -870 Z" fill="${C.top}"/>`;
+  for(let x=-54;x<=54;x+=12) s+=`<path d="M${x} ${-848+Math.abs(x)*0.12} Q${x*0.78} -700 ${x*0.95} -602" fill="none" stroke="${C.topL}" stroke-width="2"/>`;
+  s+=`<path d="M-30 -880 Q0 -852 30 -880" fill="none" stroke="${C.gold}" stroke-width="2.5"/><circle cx="0" cy="-858" r="5" fill="${C.gold}"/>`;
+  s+=`<rect x="-70" y="-606" width="140" height="16" fill="#2b2420"/><rect x="-12" y="-610" width="24" height="24" rx="4" fill="none" stroke="${C.gold}" stroke-width="4"/>`;
+  return s;}
+function biaLegs(sit){
+  if(!sit){let s=`<path d="M-70 -598 L2 -598 L-6 -40 L-122 -40 Z" fill="${C.pants}"/><path d="M-2 -598 L70 -598 L122 -40 L6 -40 Z" fill="${C.pants}"/>`;
+    s+=`<path d="M-36 -580 L-58 -44" stroke="${C.pantsS}" stroke-width="3"/><path d="M36 -580 L58 -44" stroke="${C.pantsS}" stroke-width="3"/><path d="M-2 -580 L-6 -44 L-28 -44 Z" fill="${C.pantsS}" opacity=".6"/>`;
+    s+=`<path d="M-96 -40 L-40 -40 L-44 -18 Q-80 -8 -112 -16 Z" fill="#6b4a3a"/><path d="M96 -40 L40 -40 L44 -18 Q80 -8 112 -16 Z" fill="#6b4a3a"/><rect x="-64" y="-20" width="8" height="20" fill="#6b4a3a"/><rect x="56" y="-20" width="8" height="20" fill="#6b4a3a"/>`;return s;}
+  let s=`<path d="M-86 -320 L86 -320 L112 -232 L-112 -232 Z" fill="${C.pantsS}"/>`;
+  s+=`<path d="M-112 -240 L-8 -240 L-16 -30 L-126 -30 Z" fill="${C.pants}"/><path d="M8 -240 L112 -240 L126 -30 L16 -30 Z" fill="${C.pants}"/>`;
+  s+=`<path d="M-104 -30 L-40 -30 L-44 -10 Q-80 0 -112 -8 Z" fill="#6b4a3a"/><path d="M104 -30 L40 -30 L44 -10 Q80 0 112 -8 Z" fill="#6b4a3a"/>`;return s;}
+function bia(o){
+  const sit=!!o.sit, up=sit?258:0;
+  const L=o.L||P.relaxedL,R=o.R||P.relaxedR;
+  let s=biaLegs(sit);
+  s+=`<g transform="translate(0,${up})">`;
+  s+=`<g transform="rotate(${(o.tilt||0)*0.5} 0 -900)">${biaHairBack()}</g>`;
+  s+=biaTorso();
+  s+=`<g transform="rotate(${o.tilt||0} 0 -900)">${biaHead(o)}</g>`;
+  s+=arm(-1,[-86,-848],L,{phone:o.phoneL,bracelet:true});
+  s+=arm(1,[86,-848],R,{phone:o.phoneR,phoneRot:o.phoneRot,screen:o.screen});
+  s+='</g>';return s;}
+function biaBack(o){
+  let s=biaLegs(false);
+  s+=`<rect x="-16" y="-905" width="32" height="50" fill="${C.skin}"/>`;
+  s+=`<path d="M-52 -868 C-84 -864 -90 -834 -84 -800 C-80 -760 -64 -700 -62 -640 L-68 -598 L68 -598 L62 -640 C64 -700 80 -760 84 -800 C90 -834 84 -864 52 -868 C36 -860 -36 -860 -52 -868 Z" fill="${C.top}"/>`;
+  s+=`<rect x="-70" y="-606" width="140" height="16" fill="#2b2420"/>`;
+  s+=arm(-1,[-80,-850],o.L||P.relaxedL,{bracelet:true});s+=arm(1,[80,-850],o.R||P.relaxedR,{});
+  s+=`<g transform="rotate(${o.tilt||0} 0 -900)"><ellipse cx="-63" cy="-983" rx="11" ry="17" fill="${C.skin}"/><ellipse cx="63" cy="-983" rx="11" ry="17" fill="${C.skin}"/>${biaHairBack()}`;
+  s+=`<path d="M-80 -1000 C-86 -1080 -40 -1112 0 -1110 C40 -1112 86 -1080 80 -1000 C84 -940 70 -880 0 -870 C-70 -880 -84 -940 -80 -1000 Z" fill="${C.hair}"/>`;
+  s+=curls([[-40,-1092],[-6,-1108],[30,-1100],[60,-1080],[-70,-1050],[72,-1046]],26);
+  for(const [x,y] of [[-30,-1060],[20,-1040],[-50,-960],[40,-930],[0,-990],[-20,-900]]) s+=spir(x,y,11);
+  s+='</g>';return s;}
+// Vizinho 303, 3/4, walking. p = walk phase (rad)
+const V={hood:'#111218',hoodL:'#2a2c3a',pants:'#2b2d38',pantsS:'#1e2029',shoe:'#1a1b22',sole:'#8b8f9c',skin:'#EBC9AA',hat:'#0c0d12',mask:'#09090c',hair:'#16151c'};
+function vizLeg(hip,ang,knee,front){const l1=290,l2=290;const a=ang*Math.PI/180,k=(ang-knee)*Math.PI/180;
+  const K=[hip[0]+Math.sin(a)*l1,hip[1]+Math.cos(a)*l1],F=[K[0]+Math.sin(k)*l2,K[1]+Math.cos(k)*l2];const col=front?V.pants:V.pantsS;
+  return `<path d="M${hip[0]} ${hip[1]} L${K[0]} ${K[1]} L${F[0]} ${F[1]}" fill="none" stroke="${col}" stroke-width="74" stroke-linejoin="round"/>`+
+  `<g transform="translate(${F[0]},${F[1]+20}) rotate(${-(ang-knee)*0.5})"><rect x="-42" y="-24" width="104" height="44" rx="20" fill="${V.shoe}"/><rect x="-42" y="10" width="104" height="10" rx="5" fill="${V.sole}"/></g>`;}
+function viz(o){const p=o.p||0,bob=Math.abs(Math.sin(p))*-10;
+  const aA=24*Math.sin(p),aB=-24*Math.sin(p);const kA=Math.max(0,-30*Math.sin(p+0.9)),kB=Math.max(0,30*Math.sin(p+0.9));
+  let s=`<g transform="translate(0,${bob})">`;
+  s+=vizLeg([18,-600],aB,kB,false);
+  s+=vizLeg([-18,-600],aA,kA,true);
+  s+=`<path d="M-120 -900 C-140 -860 -138 -700 -126 -560 L118 -560 C130 -700 132 -860 112 -900 C80 -930 -90 -930 -120 -900 Z" fill="${V.hood}"/>`;
+  s+=`<path d="M-80 -700 L76 -700 L92 -580 L-96 -580 Z" fill="none" stroke="${V.hoodL}" stroke-width="4"/>`;
+  s+=`<path d="M-120 -900 C-160 -820 -150 -700 -110 -640" fill="none" stroke="${V.hoodL}" stroke-width="4"/><path d="M112 -900 C150 -820 146 -700 104 -640" fill="none" stroke="${V.hoodL}" stroke-width="4"/>`;
+  s+=`<rect x="-126" y="-590" width="244" height="34" rx="10" fill="${V.hood}" stroke="${V.hoodL}" stroke-width="3"/>`;
+  s+=`<path d="M-78 -952 C-66 -886 66 -886 78 -952 C40 -920 -40 -920 -78 -952 Z" fill="${V.hood}" stroke="${V.hoodL}" stroke-width="4"/>`;
+  s+=`<g transform="rotate(${o.nod||0} 0 -930)">`;
+  s+=`<rect x="-18" y="-950" width="36" height="20" fill="${V.skin}"/>`;
+  s+=`<ellipse cx="8" cy="-1010" rx="60" ry="72" fill="${V.skin}"/><ellipse cx="-50" cy="-1005" rx="11" ry="17" fill="${V.skin}"/>`;
+  s+=`<rect x="-58" y="-1000" width="14" height="22" rx="7" fill="#f2f3f5"/>`;
+  s+=`<path d="M-44 -1010 C-10 -1016 40 -1016 66 -1008 C70 -975 52 -942 10 -938 C-28 -940 -46 -968 -44 -1010 Z" fill="${V.mask}"/><path d="M-44 -1000 L-56 -1002" stroke="${V.mask}" stroke-width="4"/>`;
+  const eb=o.blink?Math.max(1.5,9*(1-o.blink)):9;
+  s+=`<ellipse cx="0" cy="-1030" rx="6" ry="${eb}" fill="#141218"/><ellipse cx="40" cy="-1030" rx="5.5" ry="${eb}" fill="#141218"/>`;
+  s+=`<path d="M-14 -1046 L10 -1050 M30 -1050 L52 -1046" stroke="${V.hair}" stroke-width="5" stroke-linecap="round"/>`;
+  s+=`<path d="M-52 -1046 L-40 -1030 L-30 -1048 L-16 -1034 L-4 -1050 L10 -1036 L22 -1050 L36 -1034 L50 -1048 L66 -1034 L66 -1060 L-52 -1060 Z" fill="${V.hair}"/>`;
+  s+=`<path d="M-92 -1046 Q8 -1086 108 -1046 L94 -1024 Q8 -1052 -78 -1024 Z" fill="${V.hat}"/><path d="M-64 -1062 L-50 -1128 Q8 -1146 66 -1128 L80 -1062 Z" fill="${V.hat}"/><path d="M-58 -1074 C-20 -1066 40 -1066 74 -1074" fill="none" stroke="#1d1f28" stroke-width="5"/>`;
+  s+='</g></g>';return s;}
+
+const mir=a=>[[-a[0][0],a[0][1]],[-a[1][0],a[1][1]]];
+const P={relaxedR:[[108,-660],[112,-470]],phoneChestR:[[124,-690],[58,-770]],chinR:[[112,-700],[24,-906]],phoneMouthR:[[118,-700],[34,-926]],
+ presentL:[[-250,-790],[-390,-850]],hipL:[[-158,-720],[-92,-612]],typeR:[[120,-680],[40,-610]],headR:[[190,-930],[78,-1030]]};
+P.relaxedL=mir(P.relaxedR);P.typeL=mir(P.typeR);P.headL=mir(P.headR);P.chinL=mir(P.chinR);
+function lerpPose(a,b,t){return [[a[0][0]+(b[0][0]-a[0][0])*t,a[0][1]+(b[0][1]-a[0][1])*t],[a[1][0]+(b[1][0]-a[1][0])*t,a[1][1]+(b[1][1]-a[1][1])*t]];}
+
+</script>
+<script>
+// ---------- estado ----------
+const KEY='90dias-ep2-v1';
+let S={flags:{},clues:[],done:{},read:{},photos:['quarto','janela','selfie','bilhete1','bilhete2','bilhete3','print','carta','aluguel'],vote:null,log:{}};
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)S=Object.assign(S,s);}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const q=s=>document.querySelector(s), el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;};
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function toast(t){const e=q('#toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),1800);}
+const DEPTH={lock:0,pass:.5,home:1,chats:2,gallery:2,feed:2,notes:2,bank:2,chat:3};
+let cur='lock';
+function go(id,anim=true){const prev=cur;cur=id;
+  document.querySelectorAll('.screen').forEach(s=>{s.classList.toggle('on',s.id===id);s.classList.remove('in','back-in');s.style.transform='';});
+  const el=q('#'+id);if(anim&&prev!==id&&id!=='home'||(anim&&prev!=='lock'&&id==='home'&&DEPTH[prev]>1)){el.classList.add(DEPTH[id]>=DEPTH[prev]?'in':'back-in');}
+  if(id==='home')renderHome();if(id==='chats')renderChats();if(id==='gallery')renderGallery();if(id==='feed')renderFeed();if(id==='notes')renderNotes();if(id==='bank')renderBank();}
+// gesto: deslizar da borda esquerda volta; deslizar pra cima na barrinha vai pro início
+(function(){const ph=q('#phone');let sx=0,sy=0,mode=null,scr=null;
+  ph.addEventListener('pointerdown',e=>{const r=ph.getBoundingClientRect();sx=e.clientX;sy=e.clientY;mode=null;scr=q('.screen.on');
+    if(!scr||scr.id==='lock'||scr.id==='home'||q('.vote.on')||q('.viewer.on')||q('.sheet.on'))return;
+    if(e.clientX-r.left<28)mode='edge';else if(r.bottom-e.clientY<34)mode='bar';});
+  ph.addEventListener('pointermove',e=>{if(mode==='edge'){const dx=Math.max(0,e.clientX-sx);scr.classList.add('dragging');scr.style.transform=`translateX(${dx}px)`;}});
+  const end=e=>{if(!mode)return;const dx=e.clientX-sx,dy=sy-e.clientY;
+    if(mode==='edge'){scr.classList.remove('dragging');const bk=scr.querySelector('.back');
+      if(dx>90&&bk&&bk.style.visibility!=='hidden'){scr.classList.add('snap');scr.style.transform='translateX(100%)';setTimeout(()=>{scr.classList.remove('snap');bk.click();},200);}
+      else{scr.classList.add('snap');scr.style.transform='';setTimeout(()=>scr.classList.remove('snap'),260);}}
+    if(mode==='bar'&&dy>60){const bk=scr.querySelector('.back');if(!bk||bk.style.visibility!=='hidden')go('home');}
+    mode=null;};
+  ph.addEventListener('pointerup',end);ph.addEventListener('pointercancel',end);})();
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)go(b.dataset.go);});
+
+// ---------- imagens (SVG) ----------
+const svgWrap=(inner,w=1080,h=1080,vb)=>`<svg viewBox="${vb||`0 0 ${w} ${h}`}" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+const DEFS=`<defs><radialGradient id="glowA"><stop offset="0" stop-color="#FFB547" stop-opacity=".9"/><stop offset="1" stop-color="#FFB547" stop-opacity="0"/></radialGradient><radialGradient id="lampG"><stop offset="0" stop-color="#FFB547" stop-opacity=".45"/><stop offset="1" stop-color="#FFB547" stop-opacity="0"/></radialGradient><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B0E14"/><stop offset="1" stop-color="#262c5a"/></linearGradient><linearGradient id="cone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E6E8EE" stop-opacity=".22"/><stop offset="1" stop-color="#E6E8EE" stop-opacity="0"/></linearGradient></defs>`;
+const strip=s=>s.replace(/^<svg[^>]*>/,'').replace(/<\/svg>\s*$/,'');
+function noteSVG(lines,sig,bg,ink){const t=lines.map((l,i)=>`<text x="70" y="${210+i*105}" font-family="Caveat,cursive" font-size="92" fill="${ink}">${l}</text>`).join('');
+  return svgWrap(`<rect width="1080" height="1080" fill="#2A3142"/><rect x="110" y="110" width="860" height="860" rx="10" fill="${bg}" transform="rotate(-2 540 540)"/><rect x="440" y="80" width="200" height="70" fill="#E6E8EE" opacity=".6" transform="rotate(-4 540 115)"/><g transform="rotate(-2 540 540) translate(60,60)">${t}<text x="760" y="${260+lines.length*105}" text-anchor="end" font-family="Caveat,cursive" font-size="84" fill="${ink}">${sig}</text></g>`);}
+const IMG={
+ quarto:()=>svgWrap(DEFS+strip(roomSVG()),1080,1920,'0 300 1080 1080'),
+ janela:()=>svgWrap(DEFS+strip(roomSVG()),1080,1920,'140 380 800 800'),
+ selfie:()=>svgWrap(`<rect width="1080" height="1080" fill="#3a3470"/><circle cx="540" cy="380" r="420" fill="#8B7CFF" opacity=".35"/><g transform="translate(540,2700) scale(2.25)">${bia({mood:'smile'})}</g><text x="540" y="1040" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-weight="700" font-size="54" fill="#FFB547">primeiro dia em Seul 🇰🇷</text>`),
+ bilhete1:()=>noteSVG(['You sing too loud','in the shower.'],'— 303','#FFB547','#0B0E14'),
+ bilhete2:()=>noteSVG(['Sorry!! I\'ll sing','quieter. Or better.'],'— 302','#E6E8EE','#4b3fb8'),
+ bilhete3:()=>noteSVG(['Better, please.','Complaints:','010-3030-0303'],'— 303','#FFB547','#0B0E14'),
+ print:()=>svgWrap(`<rect width="1080" height="1080" fill="#10141d"/><rect y="0" width="1080" height="190" fill="#141925"/><circle cx="110" cy="95" r="52" fill="#3BA7A0"/><text x="110" y="112" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="40" fill="#0B0E14">303</text><text x="190" y="90" font-family="Plus Jakarta Sans,sans-serif" font-weight="700" font-size="50" fill="#E6E8EE">Vizinho 303</text><text x="190" y="140" font-family="sans-serif" font-size="34" fill="#8b93a7">online</text><rect x="420" y="300" width="620" height="140" rx="40" fill="#8B7CFF"/><text x="470" y="390" font-family="sans-serif" font-weight="700" font-size="46" fill="#0B0E14">▶ ıllıılıllıılı  4:12</text><rect x="40" y="520" width="520" height="210" rx="40" fill="#2A3142"/><text x="90" y="610" font-family="sans-serif" font-size="56" fill="#E6E8EE">you okay?</text><text x="90" y="690" font-family="Noto Sans KR,sans-serif" font-size="56" fill="#E6E8EE">괜찮아요?</text><text x="540" y="1020" text-anchor="middle" font-family="sans-serif" font-size="34" fill="#8b93a7">captura de tela · 02:09</text>`),
+ loja:()=>svgWrap(DEFS+strip(storeSVG())+`<g transform="translate(560,1840) scale(.95)">${viz({p:.9,blink:0})}</g>`,1080,1920,'0 420 1080 1080'),
+ carta:()=>noteSVG(["I'm Bia. I'm from Brazil.","I don't hate the goshiwon.","I just... missed home."],'— Bia, 302','#f6f1e4','#22263a'),
+ bemvinda:()=>noteSVG(['No need to apologize.','I miss home too.','Bem-vinda, Bia.'],'— 303','#f6f1e4','#4b3fb8'),
+ aluguel:()=>svgWrap(`<rect width="1080" height="1080" fill="#141925"/><rect x="90" y="250" width="900" height="560" rx="50" fill="#2a1b22" stroke="#ff5a5a" stroke-width="8"/><text x="540" y="380" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="60" fill="#E6E8EE">🏠 Goshiwon Mangwon</text><text x="540" y="470" text-anchor="middle" font-family="sans-serif" font-size="44" fill="#ff8c8c">Aluguel · quarto 302</text><text x="540" y="620" text-anchor="middle" font-family="sans-serif" font-weight="800" font-size="120" fill="#E6E8EE">₩300.000</text><text x="540" y="730" text-anchor="middle" font-family="sans-serif" font-size="44" fill="#ff8c8c">vence sexta-feira</text>`),
+ lumen:()=>svgWrap(`<rect width="1080" height="700" fill="#1C2230"/><rect width="1080" height="700" fill="#3BA7A0" opacity=".12"/><text x="540" y="200" text-anchor="middle" font-family="Fraunces,serif" font-size="90" fill="#E6E8EE">LUMEN</text><text x="540" y="270" text-anchor="middle" font-family="sans-serif" font-size="38" fill="#8b93a7">Global Analyst Program · 2026</text><g transform="translate(540,1520) scale(.95)">${bia({mood:'smile'})}</g>`,1080,700)
+};
+const CAP={quarto:'Quarto 302. "Aconchegante", segundo o anúncio.',janela:'A vista da janela. A única coisa grande do quarto.',selfie:'Selfie do primeiro dia (antes de tudo dar errado).',bilhete1:'O primeiro bilhete do 303.',bilhete2:'A resposta dela.',bilhete3:'A resposta dele. Com o número.',print:'Print da resposta das 02:07.',carta:'Rascunho da carta pro 303. Tem mancha de lágrima, não repara.',bemvinda:'O bilhete que passou por baixo da porta. A última linha é em português.',aluguel:'O aviso colado na porta do 302.'};
+
+// ---------- conversas ----------
+const T=(text,time,extra)=>Object.assign({from:'them',text,time},extra||{});
+const M=(text,time,extra)=>Object.assign({from:'me',text,time},extra||{});
+const CHATS={
+ thais:{name:'Thaís 💛',av:'T',avc:'#E58FB4',status:'online',
+  history:[{day:'Ontem'},T('cadê o áudio??? 👀','00:30'),M('amiga mandei o áudio pro vizinho 💀','02:15'),T('KKKKKKKKKK','02:15'),{day:'Hoje'},T('e aí, conseguiu falar com ele?','19:40'),T('BIA','23:50'),T('BIA ME RESPONDE O QUE ACONTECEU','01:19')],
+  script:[
+   {choice:[{t:'Amiga, ele bateu na parede 😭',set:{direta:1}},{t:'Você não vai acreditar…',set:{suspense:1}}]},
+   {if:f=>!f.direta,msgs:[T('fala logo pelo amor de deus'),M('ele bateu na parede 😭')]},
+   {msgs:[T('COMO ASSIM BATEU NA PAREDE'),M('eu tava sentada no chão chorando… e do outro lado: toc toc'),M('eu bati de volta. ele bateu três vezes'),T('😭😭😭'),T('isso é a coisa mais fofa que eu já ouvi'),T('peraí. por que você tava chorando no chão?')]},
+   {choice:[{t:'Contar da ligação com a mãe',set:{contouThais:1}},{t:'"Nada não, cansaço"',set:{fugiu:1}}]},
+   {if:f=>f.contouThais,msgs:[M('a mãe ligou perguntando do dinheiro. o adiantamento não caiu'),M('e eu disse que tava tudo ótimo'),T('ah, amiga… 🥺'),T('você sempre faz isso. carrega tudo sozinha')]},
+   {if:f=>f.fugiu,msgs:[T('Bia. eu te conheço desde a quinta série'),T('quando quiser falar, eu tô aqui 💛')]},
+   {msgs:[T('e o bilhete? você falou que ele passou um bilhete')]},
+   {choice:[{t:'📸 Mandar a foto do bilhete',photo:'bemvinda',clue:'Escreveu "Bem-vinda, Bia." em português'}]},
+   {msgs:[M('',null,{img:'bemvinda'}),T('PERA'),T('a última linha é em PORTUGUÊS?'),M('pois é. com a letra toda tremida kkk'),T('deve ter aprendido com fã brasileira, coreano ama a gente 😂'),T('mas olha a hora que ele bateu'),M('uma e catorze'),T('então ele também tava acordado. de novo.')]},
+   {choice:[{t:'Ele nunca dorme 🤔',clue:'Bateu na parede à 01:14. Ele também não dorme'},{t:'Vai ver também tava com saudade de casa',set:{fofo:1},clue:'Bateu na parede à 01:14. Ele também não dorme'}]},
+   {msgs:[T('e agora ele quer te ver. NO TERRAÇO. amanhã 21h'),T('amiga isso é filme'),T('vai ou não vai???')]},
+   {end:'thais'}
+  ]},
+ mae:{name:'Mãe ❤️',av:'M',avc:'#FFB547',status:'visto por último às 22:14',
+  history:[{day:'Hoje'},T('📹 Chamada de vídeo · 0:24','22:06'),T('Te amo, filha ❤️','22:07'),T('Seu irmão mandou um beijo. Falou que vai tirar 10 em inglês pra visitar você 😂','22:09')],
+  script:[
+   {choice:[{t:'Contar a verdade sobre o dinheiro',set:{verdade:1}},{t:'Só mandar um coração ❤️',set:{escondeu:1}}]},
+   {if:f=>f.verdade,msgs:[M('mãe… o dinheiro não caiu. a empresa atrasou'),M('desculpa ter mentido. não queria preocupar a senhora'),T('Ô minha filha…'),T('Você não precisa ser forte o tempo todo, sabia?'),T('O material do seu irmão a gente dá um jeito. A tia Neide empresta.'),T('Agora cuida de você. Promete?'),M('prometo 🥹')]},
+   {if:f=>f.escondeu,msgs:[M('❤️'),T('Bença, filha. Dorme com Deus.')]},
+   {end:'mae'}
+  ]},
+ viz:{name:'Vizinho 303',av:'303',avc:'#3BA7A0',status:'online',
+  history:[{day:'Ontem'},M('',"23:58",{audio:'4:12'}),T('you okay?\n괜찮아요?','02:07'),M('Sorry!! That audio was for my friend 😭 Please delete it.','02:24'),T('4 minutes. You really hate this goshiwon.','02:26'),{day:'Hoje'},T('Can we talk? In person.\nTomorrow, 9pm. Rooftop.','01:16')],
+  script:[{vote:true}]}
+};
+
+// ---------- motor de chat ----------
+let running=false;
+function bubble(m){
+  if(m.day)return el('div','day',m.day);
+  const b=el('div','b '+m.from+(m.img?' img':''));
+  if(m.img){b.innerHTML=IMG[m.img]();b.onclick=()=>openViewer(m.img);}
+  else if(m.audio){let w='';for(let i=0;i<26;i++)w+=`<i style="height:${6+Math.abs(Math.sin(i*1.7))*18}px"></i>`;b.innerHTML=`<div class="aud"><div class="pl"></div><div class="w">${w}</div><span>${m.audio}</span></div>`+(m.tr?`<div class="tr">${m.tr}</div>`:'');}
+  else b.innerHTML=m.text.replace(/\n/g,'<br>');
+  if(m.time)b.insertAdjacentHTML('beforeend',`<time>${m.time}${m.from==='me'?' ✓✓':''}</time>`);
+  return b;}
+function scrollEnd(){const m=q('#msgs');m.scrollTop=m.scrollHeight;}
+async function say(m){const box=q('#msgs');
+  if(m.from==='them'){const ty=el('div','typing','<i></i><i></i><i></i>');box.appendChild(ty);scrollEnd();q('#cSt').textContent='digitando…';q('#cSt').style.color='var(--teal)';
+    await sleep(500+Math.min(1400,(m.text||'').length*28));ty.remove();q('#cSt').textContent='online';q('#cSt').style.color='';}
+  else await sleep(350);
+  if(!m.time)m.time='01:'+String(22+Math.floor(Math.random()*3)).padStart(2,'0');
+  box.appendChild(bubble(m));scrollEnd();}
+function addClue(c){if(c&&!S.clues.includes(c)){S.clues.push(c);toast('📌 Pista guardada nas Notas');}}
+function addPhoto(p){if(p&&!S.photos.includes(p)){S.photos.push(p);}}
+async function openChat(id){
+  const C=CHATS[id];go('chat');q('#cName').textContent=C.name;q('#cSt').textContent=C.status;
+  q('#cAv').textContent=C.av;q('#cAv').style.background=C.avc;
+  const box=q('#msgs');box.innerHTML='';C.history.forEach(m=>box.appendChild(bubble(m)));
+  S.read[id]=1;save();
+  const log=S.log[id]||[];log.forEach(m=>box.appendChild(bubble(m)));scrollEnd();
+  const comp=q('#comp');comp.innerHTML='';
+  if(id==='viz'){comp.innerHTML=S.vote?`<div class="hint">Você escolheu <b>${S.vote}</b>. A comunidade decide o Episódio 2 💜</div><button class="choice" id="rv">Ver meu resultado</button>`:`<div class="hint">O que a Bia responde? A decisão é sua 👇</div><button class="choice" id="ov">Decidir a resposta da Bia</button>`;
+    (q('#ov')||q('#rv')).onclick=openVote;return;}
+  if(S.done[id]){comp.innerHTML='<div class="hint">Conversa encerrada por hoje.</div>';return;}
+  run(id);}
+async function run(id){if(running)return;running=true;const bk=q('#chat .back');bk.style.visibility='hidden';const C=CHATS[id];const comp=q('#comp');const f=S.flags;
+  const push=m=>{(S.log[id]=S.log[id]||[]).push(m);save();};
+  let i=S.log[id+'_step']||0;
+  for(;i<C.script.length;i++){const st=C.script[i];S.log[id+'_step']=i;save();
+    if(st.if&&!st.if(f))continue;
+    if(st.msgs){for(const m of st.msgs){const mm=Object.assign({},m);await say(mm);push(mm);}}
+    if(st.choice){comp.innerHTML='';bk.style.visibility='visible';const pick=await new Promise(res=>st.choice.forEach(c=>{const b=el('button','choice',c.t);b.onclick=()=>res(c);comp.appendChild(b);}));
+      comp.innerHTML='';bk.style.visibility='hidden';Object.assign(f,pick.set||{});addClue(pick.clue);if(pick.photo)addPhoto(pick.photo);
+      if(!pick.photo){const mm={from:'me',text:pick.t};await say(mm);push(mm);} }
+    if(st.end){S.done[st.end]=1;addClue(st.clue);if(st.end==='thais'){addPhoto('bilhete2');}S.log[id+'_step']=i+1;save();comp.innerHTML='<div class="hint">Conversa encerrada por hoje. Volte ao início 🏠</div>';}
+  }
+  S.log[id+'_step']=i;save();running=false;bk.style.visibility='visible';}
+
+
+const ICON={
+ msg:'<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 3C6.5 3 2 6.8 2 11.5c0 2.6 1.4 4.9 3.6 6.5-.2 1.3-.9 2.6-2 3.5 2 0 3.9-.6 5.3-1.6 1 .3 2 .4 3.1.4 5.5 0 10-3.8 10-8.5S17.5 3 12 3z"/></svg>',
+ photos:'<svg viewBox="0 0 24 24">'+['#ffcc00','#ff9500','#ff2d55','#af52de','#5856d6','#34aadc','#4cd964','#a4e05a'].map((c,i)=>`<ellipse cx="12" cy="6.2" rx="2.7" ry="4.6" fill="${c}" opacity=".9" transform="rotate(${i*45} 12 12)"/>`).join('')+'</svg>',
+ notes:'<svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3" fill="#fff" opacity=".95"/><rect x="4" y="3" width="16" height="5" rx="2.5" fill="#FFB547"/><path d="M7 12h10M7 15h10M7 18h6" stroke="#b9b2a4" stroke-width="1.3" stroke-linecap="round"/></svg>',
+ pulse:'<svg viewBox="0 0 24 24"><path d="M2 13h4l2.5-6 4 11 3-8 1.8 3H22" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ cam:'<svg viewBox="0 0 24 24" width="22"><path fill="#fff" d="M9 4h6l1.5 2H20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3.5z"/><circle cx="12" cy="13" r="4" fill="#333"/></svg>',
+ phone:'<svg viewBox="0 0 24 24"><path fill="#fff" d="M6.6 2.8 9 2.3l1.7 4.1-2 1.5a12 12 0 0 0 7.4 7.4l1.5-2 4.1 1.7-.5 2.4a2.5 2.5 0 0 1-2.6 2C10.9 19 5 13.1 4.6 5.4a2.5 2.5 0 0 1 2-2.6z"/></svg>',
+ translate:'<svg viewBox="0 0 24 24"><text x="2" y="15" font-size="12" font-weight="700" fill="#fff" font-family="Noto Sans KR,sans-serif">가</text><text x="12" y="21" font-size="11" font-weight="800" fill="#fff" font-family="Inter,sans-serif">A</text></svg>',
+ bank:'<svg viewBox="0 0 24 24"><text x="12" y="17" text-anchor="middle" font-size="15" font-weight="800" fill="#fff" font-family="Inter,sans-serif">₩</text></svg>',
+ torch:'<svg viewBox="0 0 24 24" width="22"><path fill="#fff" d="M8 2h8v4l-2 3v13h-4V9L8 6z"/></svg>',
+ status:(c='#fff')=>`<svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="${c}"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="${c}"/><rect x="10" y="3" width="3" height="9" rx="1" fill="${c}"/><rect x="15" y="0" width="3" height="12" rx="1" fill="${c}" opacity=".35"/></svg><svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.8 9.2a3.2 3.2 0 0 1 4.4 0zM3.6 7a6.4 6.4 0 0 1 8.8 0l1.6-1.6a8.7 8.7 0 0 0-12 0zM.8 4.2a10.6 10.6 0 0 1 14.4 0" fill="none" stroke="${c}" stroke-width="1.7" stroke-linecap="round"/></svg><svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="${c}" opacity=".45"/><rect x="2.5" y="2.5" width="5" height="8" rx="1.5" fill="#ff3b30"/><rect x="24.5" y="4.5" width="2" height="4" rx="1" fill="${c}" opacity=".45"/></svg>`
+};
+function wallSVG(){seed=17;let st='',b='';
+  for(let i=0;i<60;i++)st+=`<circle cx="${rnd()*390}" cy="${rnd()*420}" r="${rnd()*1.2+.3}" fill="#fff" opacity="${.3+rnd()*.6}"/>`;
+  const layer=(y0,hmin,hmax,col,lit)=>{let x=-10,o='';while(x<400){const w=22+rnd()*40,h=hmin+rnd()*(hmax-hmin);o+=`<rect x="${x}" y="${844-y0-h}" width="${w}" height="${h+y0}" fill="${col}"/>`;if(lit)for(let yy=844-y0-h+8;yy<844-20;yy+=13)for(let xx=x+5;xx<x+w-6;xx+=9)if(rnd()>.72)o+=`<rect x="${xx}" y="${yy}" width="4" height="6" fill="${rnd()>.3?'#FFB547':'#7fd6cf'}" opacity="${.45+rnd()*.5}"/>`;x+=w+2;}return o;};
+  b+=layer(120,60,200,'#1d1f45',false)+`<g fill="#171a3a"><path d="M200 700 Q285 600 370 700Z"/><rect x="282" y="470" width="6" height="160"/><rect x="273" y="520" width="24" height="16" rx="4"/><rect x="278" y="490" width="14" height="10" rx="3"/></g><circle cx="285" cy="466" r="3" fill="#ff5a5a"/>`+layer(40,40,230,'#121430',true);
+  return `<svg viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ws" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#090b18"/><stop offset=".55" stop-color="#2a2462"/><stop offset="1" stop-color="#4b3a8c"/></linearGradient><radialGradient id="wg" cx=".85" cy=".66" r=".5"><stop offset="0" stop-color="#8B7CFF" stop-opacity=".35"/><stop offset="1" stop-color="#8B7CFF" stop-opacity="0"/></radialGradient></defs><rect width="390" height="844" fill="url(#ws)"/><rect width="390" height="844" fill="url(#wg)"/>${st}<circle cx="335" cy="560" r="20" fill="#f2efe6"/><circle cx="335" cy="560" r="46" fill="#f2efe6" opacity=".08"/>${b}</svg>`;}
+function chrome(){document.querySelectorAll('.si').forEach(e=>e.innerHTML=ICON.status(e.classList.contains('dark')?'#2a2420':'#fff'));
+  const w=wallSVG();document.querySelectorAll('[data-wall]').forEach((e,i)=>e.innerHTML=w.replace(/id="(ws|wg)"/g,'id="$1'+i+'"').replace(/url\(#(ws|wg)\)/g,'url(#$1'+i+')'));
+  document.querySelectorAll('[data-ic]').forEach(e=>e.innerHTML=ICON[e.dataset.ic]);}
+
+
+// ---------- codigo de acesso ----------
+const EP = 'ep2';
+let typed='';
+function renderPad(){const L=['','ABC','DEF','GHI','JKL','MNO','PQRS','TUV','WXYZ'];
+  q('#pad').innerHTML=[1,2,3,4,5,6,7,8,9].map(n=>`<button class="key glass" data-k="${n}">${n}<small>${L[n-1]}</small></button>`).join('')+'<span></span><button class="key glass" data-k="0">0</button><span></span>';
+  q('#pad').querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>press(b.dataset.k));}
+function dots(){q('#dots').querySelectorAll('i').forEach((d,i)=>d.classList.toggle('on',i<typed.length));}
+async function press(k){if(typed.length>=4)return;typed+=k;dots();
+  if(typed.length===4){let ok=false;
+    try{
+      const response=await fetch('/api/unlock',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({episode:EP,code:typed})});
+      const result=await response.json();
+      if(result.locked)toast(`Muitas tentativas. Tente de novo em ${result.retryInMin} min.`);
+      else if(!response.ok)throw new Error('Falha ao verificar o codigo.');
+      ok=result.ok===true;
+    }catch{toast('Nao foi possivel verificar o codigo. Tente novamente.');}
+    if(ok){S.unlocked=1;save();setTimeout(()=>{typed='';dots();go('home');},180);}
+    else{const d=q('#dots');d.classList.add('shake');try{navigator.vibrate&&navigator.vibrate(200)}catch(e){}setTimeout(()=>{d.classList.remove('shake');typed='';dots();},480);}}}
+
+// ---------- telas ----------
+function lockScreen(){const n=[['msg','linear-gradient(180deg,#67e06f,#2fbf4c)','Vizinho 303','Can we talk? In person.','01:16'],['msg','linear-gradient(180deg,#67e06f,#2fbf4c)','Thaís 💛','BIA ME RESPONDE O QUE ACONTECEU','01:19'],['bank','linear-gradient(180deg,#ff6b6b,#d23c3c)','Banco','Aluguel do goshiwon vence sexta: ₩300.000','20:00'],['pulse','linear-gradient(160deg,#8B7CFF,#E58FB4)','Pulse','NOCTURNE: comeback adiado sem nova data','00:40']];
+  const box=q('#lockN');n.forEach((x,i)=>{const d=el('div','notif',`<div class="ic" style="background:${x[1]};padding:7px">${ICON[x[0]]}</div><div style="flex:1"><div style="display:flex"><b>${x[2]}</b><small>${x[4]}</small></div><p>${x[3]}</p></div>`);d.style.animationDelay=(0.4+i*.5)+'s';box.appendChild(d);});}
+const prog=()=>[S.done.thais,S.done.mae,S.clues.length>=4].filter(Boolean).length;
+function renderHome(){const unread=['thais','mae','viz'].filter(k=>!S.read[k]).length;
+  const A={chats:['Mensagens','msg','background:linear-gradient(180deg,#67e06f,#2fbf4c)',unread,false],gallery:['Galeria','photos','',0,true],notes:['Notas','notes','background:rgba(255,181,71,.35)',0,true],feed:['Pulse','pulse','background:linear-gradient(160deg,rgba(139,124,255,.75),rgba(229,143,180,.6))',S.read.feed?0:1,true],
+   bank:['Banco','bank','background:rgba(59,167,160,.45)',0,true],phone:['Telefone','phone','background:linear-gradient(180deg,#67e06f,#2fbf4c)',0,false],cam:['Câmera','cam','background:rgba(140,140,150,.4)',0,true],translate:['Tradutor','translate','background:rgba(70,130,255,.5)',0,true]};
+  const FUN={phone:'Ligar pra mãe de novo? Ela vai perceber que você chorou 🥺',cam:'A Bia tá de pijama. Sem fotos agora 🙈',translate:'"Socorro" em coreano: 도와주세요 (dowajuseyo)'};
+  const ap=(k,lbl=true)=>{const a=A[k];const act=FUN[k]?`data-fun="${k}"`:`data-go="${k}"`;return `<button class="app" ${act}><div class="ico ${a[4]?'glassy':''}" style="${a[2]}">${ICON[a[1]]}</div>${lbl?`<span class="lbl">${a[0]}</span>`:''}${a[3]?`<span class="badge">${a[3]}</span>`:''}</button>`;};
+  q('#apps').innerHTML=['gallery','notes','feed','bank'].map(k=>ap(k)).join('');
+  q('#dock').innerHTML=['phone','chats','cam','translate'].map(k=>ap(k,false)).join('');
+  document.querySelectorAll('[data-fun]').forEach(b=>b.onclick=()=>toast(FUN[b.dataset.fun]));
+  const it=(ok,t)=>`<div class="it"><span class="ck ${ok?'on':''}"></span><span style="${ok?'opacity:.55;text-decoration:line-through':''}">${t}</span></div>`;
+  const p=prog();
+  q('#todo').innerHTML=`<b>Dia 2 · ${p}/3</b>`+it(S.done.thais,'Falar com a Thaís')+it(S.done.mae,'Responder a mãe')+it(S.clues.length>=4,`Pistas (${Math.min(4,S.clues.length)}/4)`)+(p>=3?`<div style="color:var(--amber);font-weight:700">→ Responder o 303</div>`:'');
+  q('#prog').innerHTML='';}
+function renderChats(){q('#chatList').innerHTML=['viz','thais','mae'].map(k=>{const C=CHATS[k];const last=C.history[C.history.length-1];return `<button class="row" data-chat="${k}"><div class="av" style="background:${C.avc}">${C.av}</div><div class="m"><b>${C.name}</b><p>${last.text||'🎤 Mensagem de voz'}</p></div>${S.read[k]?'':'<span class="dot"></span>'}</button>`}).join('');
+  document.querySelectorAll('[data-chat]').forEach(b=>b.onclick=()=>openChat(b.dataset.chat));}
+function renderGallery(){const all=['carta','bemvinda','aluguel','print','bilhete3','bilhete2','bilhete1','selfie','quarto','janela'];
+  q('#grid').innerHTML=all.map(k=>S.photos.includes(k)?`<button data-img="${k}">${IMG[k]()}</button>`:`<button class="lock" disabled>🔒<br>ainda não</button>`).join('');
+  document.querySelectorAll('[data-img]').forEach(b=>b.onclick=()=>openViewer(b.dataset.img));}
+function openViewer(k){const v=q('#viewer');v.innerHTML=IMG[k]()+`<p>${CAP[k]||''}</p><button class="ghost" style="max-width:200px">Fechar</button>`;v.classList.add('on');v.querySelector('button').onclick=()=>v.classList.remove('on');}
+const POSTS=[
+ {u:'nocturne_official',n:'NOCTURNE',c:'#0B0E14',t:'[Comunicado] O comeback do NOCTURNE foi adiado. Nova data em breve. Obrigado por esperarem por nós. 🌙',when:'2 h',likes:'1,1 mi'},
+ {u:'haneul.br',n:'Haneul Brasil 🇧🇷',c:'#8B7CFF',t:'lembrando que o Haneul tava aprendendo português pra turnê no Brasil 🥹 ele mandou "saudade" num live uma vez e a gente nunca superou',when:'4 h',likes:'31 mil',clue:'Fã-site: Haneul estudava português pra turnê no Brasil'},
+ {u:'seoul.spotter',n:'Seoul Spotter',c:'#3BA7A0',t:'o cara de bucket hat de novo 👀 papelaria 24h em Mangwon, 00:50, comprando bloquinho de papel. quem compra papel de madrugada??',img:'loja',when:'40 min',likes:'5.882',clue:'Spotter: o cara de bucket hat comprou papel numa papelaria de Mangwon, 00:50'},
+ {u:'lumen.ent',n:'LUMEN Entertainment',c:'#FFB547',t:'Semana intensa no Global Analyst Program! Nossos analistas já estão mergulhados nos dados do próximo comeback. 📊',img:'lumen',when:'1 dia',likes:'10,2 mil'},
+ {u:'thais.bh',n:'Thaís',c:'#E58FB4',t:'se alguém fizer minha amiga chorar em Seul eu atravesso o oceano a nado 🌊😤💛',when:'3 h',likes:'112'}];
+function renderFeed(){S.read.feed=1;save();
+  q('#posts').innerHTML=POSTS.map((p,i)=>`<div class="post"><div class="h"><div class="av" style="background:${p.c};color:${p.c==='#0B0E14'?'#E6E8EE':'#0B0E14'};width:34px;height:34px;font-size:11px">${p.n[0]}</div><div><b>${p.n}</b> <small>@${p.u} · ${p.when}</small></div></div><p>${p.t}</p>${p.img?IMG[p.img]():''}<div class="acts">♥ ${p.likes} · 💬 · ↗${p.clue?`<button class="pin ${S.clues.includes(p.clue)?'done':''}" data-i="${i}">${S.clues.includes(p.clue)?'✓ pista guardada':'📌 guardar pista'}</button>`:''}</div></div>`).join('');
+  document.querySelectorAll('.pin').forEach(b=>b.onclick=()=>{addClue(POSTS[b.dataset.i].clue);save();renderFeed();});}
+function renderNotes(){const have=S.clues;
+  q('#noteBody').innerHTML=`<h2>Dia 2 de 90</h2><small>01:21</small>
+  <p>O RH disse que o adiantamento "atrasou". O aluguel vence sexta. Eu tenho ₩87.000 e um kimbap no meu nome.</p>
+  <p>A mãe ligou. Eu disse que tava tudo ótimo. Por que eu sempre faço isso?</p>
+  <p>Escrevi uma carta pro 303 e passei por baixo da porta. Depois sentei no chão e chorei igual criança.</p>
+  <p>E aí… toc toc. Do outro lado da parede.</p>
+  <h3>VIZINHO 303 · PISTAS</h3>
+  ${have.map(c=>`<div class="clue">• ${c}</div>`).join('')}
+  ${have.length<4?`<div class="clue miss">• … (${4-Math.min(4,have.length)} pista(s) faltando)</div>`:''}
+  ${have.length>=4?`<div class="theory">Ele não dorme. Compra papel de madrugada. Escreve português com a letra tremida…<br>Bia, você tá vendo coisa onde não tem. Vai dormir. 😴</div>`:''}`;}
+
+
+// ---------- banco ----------
+// Ajuste aqui, a cada episódio: números do post no Instagram (só contam a partir do Ep. 2).
+const ECON={likes:0,comments:0,followers:0,rate:{likes:100,comments:2000,followers:5000},goal:300000,
+ start:[
+ {ic:'🇧🇷',t:'Saldo trazido do Brasil',d:'dia 1 · 07:00',v:280000},
+ {ic:'🚇',t:'Recarga T-money',d:'dia 1 · 08:15',v:-20000},
+ {ic:'🏠',t:'Goshiwon Mangwon · caução',d:'dia 1 · 10:12',v:-150000},
+ {ic:'🍙',t:'CU Conveniência · kimbap',d:'dia 1 · 12:40',v:-3500},
+ {ic:'☕',t:'Café da equipe (rodada da Bia)',d:'dia 1 · 15:30',v:-14100},
+ {ic:'🍜',t:'Ramyeon + água',d:'dia 2 · 20:10',v:-5400}]};
+const won=v=>(v<0?'−':'')+'₩ '+Math.abs(v).toLocaleString('pt-BR');
+const brl=v=>'R$ '+(v*0.0036).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const community=()=>ECON.likes*ECON.rate.likes+ECON.comments*ECON.rate.comments+ECON.followers*ECON.rate.followers;
+function txs(){const l=[...ECON.start,...(S.tx||[])];const c=community();if(c>0)l.push({ic:'💜',t:'Ajuda da comunidade',d:`${ECON.likes} curtidas · ${ECON.comments} comentários · ${ECON.followers} seguidores`,v:c});return l;}
+const balance=()=>txs().reduce((a,t)=>a+t.v,0);
+function renderBank(){const l=txs().slice().reverse();const c=community();const pct=Math.min(100,Math.round(c/ECON.goal*100));
+  q('#bankBody').innerHTML=`<div class="big-title bk-head">Banco</div>
+  <div class="bk-card"><small>Conta corrente · Bia Moraes</small><div class="bal">${won(balance())}</div><small style="opacity:.7">≈ ${brl(balance())}</small>
+   <div class="bk-acts"><button id="pixMae">Enviar pra mãe 🇧🇷</button><button id="extr">Extrato</button></div></div>
+  <div class="bk-sec">CONTAS</div>
+  <div class="tx" style="border:1px solid rgba(255,90,90,.5);border-radius:16px;padding:10px 12px;background:rgba(255,90,90,.08)"><div class="ti">🏠</div><div class="tm"><b>Aluguel · quarto 302</b><small style="color:#ff8c8c">vence sexta-feira</small></div><div class="tv">${won(-ECON.goal)}</div></div>
+  <div class="tx" style="opacity:.75"><div class="ti">🏦</div><div class="tm"><b>Adiantamento · LUMEN</b><small>⏳ pendente · "previsão: semana que vem"</small></div><div class="tv" style="text-decoration:line-through;opacity:.6">+₩ 500.000</div></div>
+  <div class="bk-sec">AJUDA DA COMUNIDADE</div>
+  <div class="vaq glass"><b>💜 Vocês sustentam a Bia</b><p>❤️ curtida = ₩100 · 💬 comentário = ₩2.000 · 👤 seguidor novo = ₩5.000</p>
+   <div style="display:flex;justify-content:space-between;font-size:13px;margin-top:8px"><span>Meta do aluguel</span><span>${won(c)} / ${won(ECON.goal)}</span></div>
+   <div style="height:10px;border-radius:6px;background:rgba(255,255,255,.12);margin-top:6px;overflow:hidden"><div style="width:${Math.max(3,pct)}%;height:100%;background:linear-gradient(90deg,#8B7CFF,#FFB547)"></div></div>
+   <div class="amt">${c>=ECON.goal?'Aluguel garantido 🎉':(c>0?'+'+won(c):'Contando a partir do Ep. 2')}</div></div>
+  <div class="bk-sec">MOVIMENTAÇÕES</div>
+  <div id="txl">${l.map(t=>`<div class="tx"><div class="ti">${t.ic}</div><div class="tm"><b>${t.t}</b><small>${t.d}</small></div><div class="tv ${t.v>0?'pos':''}">${t.v>0?'+':''}${won(t.v)}</div></div>`).join('')}</div>`;
+  q('#pixMae').onclick=()=>S.done.mae?pixSheet():toast('Responda a mensagem da mãe primeiro 💬');q('#extr').onclick=()=>q('#txl').scrollIntoView({behavior:'smooth'});}
+function pixSheet(){const sh=q('#sheet');const b=balance();
+  sh.innerHTML=`<div class="pan"><div class="grab"></div><h3>Enviar pra mãe</h3><p>Pro material do seu irmão. Mas o aluguel vence sexta… e o saldo é esse.</p>
+  <div class="amts">${[10000,30000,50000].map(v=>`<button data-v="${v}" ${v>b?'disabled':''}>${won(v)}</button>`).join('')}</div><button class="ghost" id="shC">Agora não</button></div>`;
+  sh.classList.add('on');q('#shC').onclick=()=>sh.classList.remove('on');sh.onclick=e=>{if(e.target===sh)sh.classList.remove('on');};
+  sh.querySelectorAll('[data-v]').forEach(x=>x.onclick=()=>{const v=+x.dataset.v;S.tx=S.tx||[];S.tx.push({ic:'💸',t:'Envio internacional · Mãe',d:'dia 2 · 01:'+String(25+S.tx.length).padStart(2,'0'),v:-v});
+    S.flags.ajudouMae=1;(S.log.mae=S.log.mae||[]).push({from:'me',text:`mãe, mandei ${won(v)} pro material do Davi 💜`,time:'01:26'},{from:'them',text:'Filha!! E o seu aluguel?? 🥹',time:'01:27'},{from:'them',text:'Deus te abençoe aí. Te devolvo assim que der ❤️',time:'01:27'});
+    S.read.mae=0;save();sh.classList.remove('on');toast('Enviado. A mãe respondeu 💬');renderBank();});}
+
+// ---------- votação ----------
+const OPTS=[['A','Vai, com o melhor look que o dinheiro permitir'],['B','Vai, mas com a Thaís escondida numa chamada de vídeo'],['C','Não vai, e responde: "Primeiro me diz quem você é"']];
+function openVote(){const v=q('#vote');v.classList.add('on');
+  if(S.vote)return showEnd();
+  v.innerHTML=`<div class="k">FALTAM 88 DIAS</div><h1>Amanhã, 21h, no terraço.<br>O que a Bia faz?</h1>${OPTS.map(o=>`<button class="opt" data-v="${o[0]}"><span>${o[0]}</span>${o[1]}</button>`).join('')}<button class="ghost" id="vClose">Ainda não</button>`;
+  v.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{v.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');S.vote=b.dataset.v;save();setTimeout(showEnd,500);});
+  q('#vClose').onclick=()=>v.classList.remove('on');}
+function showEnd(){const v=q('#vote');const f=S.flags;const chips=[];
+  if(f.verdade)chips.push('Contou a verdade pra mãe');if(f.escondeu)chips.push('Segurou tudo sozinha');if(f.contouThais)chips.push('Desabafou com a Thaís');if(f.fugiu)chips.push('"Nada não, cansaço"');if(f.fofo)chips.push('Coração mole');if(f.ajudouMae)chips.push('Mandou dinheiro pra mãe');
+  chips.push(`Detetive: ${Math.min(4,S.clues.length)}/4 pistas`);
+  const o=OPTS.find(x=>x[0]===S.vote);
+  v.innerHTML=`<div class="k">FALTAM 88 DIAS</div><h1>Sua escolha:<br>${o[0]}. ${o[1]}</h1>
+  <div style="text-align:center;font-size:14px;color:#c8cbe0">Como a Bia foi nessa noite:</div><div class="chips">${chips.map(c=>`<span class="chip">${c}</span>`).join('')}</div>
+  <div style="background:rgba(20,25,37,.8);border:1px solid #2A3142;border-radius:18px;padding:14px;font-size:14px;line-height:1.5">A decisão oficial é da comunidade: <b>comente a sua letra no Episódio 2</b> no Instagram do <b>90 dias na Coreia</b>. A mais votada vira o Episódio 3. E cada comentário vira ₩2.000 pro aluguel da Bia 💜</div>
+  <button class="cta" id="copy">Copiar meu resultado</button><button class="ghost" id="back">Voltar ao celular da Bia</button><button class="ghost" id="reset">Recomeçar do zero</button>
+  <div class="fine">Ficção. Personagens, grupo e empresa fictícios.</div>`;
+  q('#copy').onclick=async()=>{const t=`Ep. 2: eu escolhi ${o[0]} no 90 dias na Coreia 💜 "${o[1]}". E você?`;try{await navigator.clipboard.writeText(t);toast('Copiado! Cola nos comentários 💜');}catch(e){toast('Não deu pra copiar aqui');}};
+  q('#back').onclick=()=>{v.classList.remove('on');go('home');};
+  q('#reset').onclick=()=>{try{localStorage.removeItem(KEY)}catch(e){}location.reload();};}
+
+// ---------- início ----------
+chrome();lockScreen();
+q('#unlockBtn').onclick=()=>S.unlocked?go('home'):(typed='',dots(),go('pass'));
+renderPad();q('#forgot').onclick=()=>q('#hint').classList.toggle('on');q('#pcBack').onclick=()=>go('lock');
+</script></body></html>
